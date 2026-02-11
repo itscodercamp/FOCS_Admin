@@ -1,0 +1,83 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<!-- Page Header -->
+<div style="margin-bottom: 30px;">
+    <h2 style="font-weight: 600;">Dashboard</h2>
+    <p style="color: var(--text-muted);">Overview of portal activity</p>
+</div>
+
+<!-- Stats Cards -->
+<div class="card-grid">
+    <div class="card success">
+        <h3>Partnership Requests</h3>
+        <div class="value">{{ partnership_requests|length }}</div>
+    </div>
+    <div class="card warning">
+        <h3>Job Applications</h3>
+        <div class="value">{{ job_applications|length }}</div>
+    </div>
+    <div class="card danger">
+        <h3>Contact Messages</h3>
+        <div class="value">{{ contact_queries|length }}</div>
+    </div>
+    <div class="card">
+        <h3>Total Traffic</h3>
+        <div class="value">1,245</div>
+    </div>
+</div>
+
+<!-- Charts -->
+<div class="charts-container">
+    <div class="chart-card">
+        <h3 style="margin-bottom: 20px;">Traffic Overview</h3>
+        <div style="height: 300px;">
+            <canvas id="marketChart"></canvas>
+        </div>
+    </div>
+    <div class="chart-card">
+        <h3 style="margin-bottom: 20px;">Traffic Sources</h3>
+        <div style="height: 300px;">
+            <canvas id="sourcesChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Submissions Table -->
+<div class="table-responsive">
+    <h3 style="margin-bottom: 20px;">Recent Contact Queries</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Type</th>
+                <th>Message</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for query in contact_queries[:5] %}
+            <tr>
+                <td>{{ query.name }}</td>
+                <td>{{ query.email }}</td>
+                <td><span
+                        style="padding: 4px 8px; background: rgba(78, 115, 223, 0.1); color: var(--primary-color); border-radius: 4px; font-size: 0.85em;">{{
+                        query.type }}</span></td>
+                <td>{{ query.message[:30] }}...</td>
+                <td>{{ query.timestamp.strftime('%Y-%m-%d') }}</td>
+                <td>
+                    <a href="{{ url_for('admin.contacts') }}" class="btn btn-primary"
+                        style="font-size: 0.8rem; text-decoration: none;">View All</a>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6" style="text-align: center;">No messages found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

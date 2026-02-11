@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin Dashboard - AI Labs{% endblock %}</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3><i class="fas fa-robot"></i> AI Labs</h3>
+            </div>
+            <ul class="list-unstyled components">
+                <li class="{% if request.endpoint == 'admin.dashboard' %}active{% endif %}">
+                    <a href="{{ url_for('admin.dashboard') }}"><i class="fas fa-home"></i> Dashboard</a>
+                </li>
+                <li class="{% if request.endpoint == 'admin.contacts' %}active{% endif %}">
+                    <a href="{{ url_for('admin.contacts') }}"><i class="fas fa-envelope"></i> Contact Inquiries</a>
+                </li>
+                <li class="{% if request.endpoint == 'admin.partnerships' %}active{% endif %}">
+                    <a href="{{ url_for('admin.partnerships') }}"><i class="fas fa-handshake"></i> Partnerships</a>
+                </li>
+                <li class="{% if request.endpoint == 'admin.careers' %}active{% endif %}">
+                    <a href="{{ url_for('admin.careers') }}"><i class="fas fa-briefcase"></i> Careers</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Page Content -->
+        <div id="content">
+            <nav class="navbar">
+                <button type="button" id="sidebarCollapse" class="navbar-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <div style="display: flex; align-items: center; gap: 20px;">
+                    <button id="themeToggle" class="navbar-btn" title="Toggle Theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div class="profile-dropdown">
+                        <span style="font-weight: 500;">Admin</span>
+                        <a href="{{ url_for('admin.logout') }}"
+                            style="margin-left: 10px; color: var(--danger-color); text-decoration: none;"><i
+                                class="fas fa-sign-out-alt"></i></a>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="container-fluid">
+                <!-- Flash Messages handled by SweetAlert script below -->
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+
+    <!-- SweetAlert Integration for Flash Messages & Deletions -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Flash Messages
+            {% with messages = get_flashed_messages(with_categories = true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            Swal.fire({
+                icon: '{{ category if category != "danger" else "error" }}',
+                title: '{{ message }}',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+            });
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            // Delete Confirmation
+            const deleteForms = document.querySelectorAll('form[action*="delete"]');
+            deleteForms.forEach(form => {
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

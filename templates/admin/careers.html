@@ -1,0 +1,51 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<div style="margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center;">
+    <div>
+        <h2 style="font-weight: 600;">Job Applications</h2>
+        <p style="color: var(--text-muted);">Manage career applications.</p>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Job Role</th>
+                <th>Candidate Name</th>
+                <th>Email</th>
+                <th>Resume Link</th>
+                <th>Cover Letter</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for app in job_applications %}
+            <tr>
+                <td>{{ app.id }}</td>
+                <td>{{ app.job_role }}</td>
+                <td>{{ app.name }}</td>
+                <td>{{ app.email }}</td>
+                <td><a href="{{ app.resume_link }}" target="_blank">View Resume</a></td>
+                <td>{{ app.cover_letter[:100] }}...</td>
+                <td>{{ app.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>
+                    <form action="{{ url_for('admin.delete_career', id=app.id) }}" method="POST" class="delete-form"
+                        style="display:inline;">
+                        <button type="submit" class="btn btn-danger"
+                            style="padding: 5px 10px; font-size: 0.8rem;">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="8" style="text-align: center;">No job applications found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
