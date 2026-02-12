@@ -52,6 +52,28 @@ def create_app():
     # Create tables
     with app.app_context():
         db.create_all()
+        # Ensure database schema is up to date (Migration for slug columns)
+        try:
+            from sqlalchemy import inspect
+            inspector = inspect(db.engine)
+            
+            # Check Project table
+            columns = [c['name'] for c in inspector.get_columns('project')]
+            if 'slug' not in columns:
+                db.session.execute(db.text('ALTER TABLE project ADD COLUMN slug VARCHAR(150)'))
+                db.session.commit()
+                print("Added slug column to project table.")
+
+            # Check Event table
+            columns = [c['name'] for c in inspector.get_columns('event')]
+            if 'slug' not in columns:
+                db.session.execute(db.text('ALTER TABLE event ADD COLUMN slug VARCHAR(150)'))
+                db.session.commit()
+                print("Added slug column to event table.")
+        except Exception as e:
+            print(f"Migration error: {e}")
+            db.session.rollback()
+
         create_initial_admin()
 
     return app
