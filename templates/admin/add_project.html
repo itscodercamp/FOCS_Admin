@@ -7,7 +7,7 @@
 </div>
 
 <div class="table-responsive" style="padding: 30px;">
-    <form method="POST" action="{{ url_for('admin.add_project') }}">
+    <form method="POST" action="{{ url_for('admin.add_project') }}" enctype="multipart/form-data">
         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
             <div>
                 <label style="display: block; margin-bottom: 8px; font-weight: 500;">Project Title *</label>
@@ -47,27 +47,21 @@
             </div>
 
             <div style="grid-column: 1 / -1;">
-                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Short Description</label>
-                <textarea name="description" rows="3"
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Full Description *</label>
+                <textarea name="full_description" rows="5" required
                     style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);"></textarea>
-            </div>
-
-            <div style="grid-column: 1 / -1;">
-                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Full Description</label>
-                <textarea name="full_description" rows="5"
-                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);"></textarea>
+                <p style="font-size: 12px; color: var(--text-muted); margin-top: 5px;">Short description will be automatically generated from this.</p>
             </div>
 
             <div>
-                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Thumbnail URL</label>
-                <input type="url" name="thumbnail"
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Thumbnail Image</label>
+                <input type="file" name="thumbnail" accept="image/*"
                     style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
             </div>
 
             <div>
-                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Screenshots (comma-separated
-                    URLs)</label>
-                <input type="text" name="screenshots" placeholder="https://img1.jpg, https://img2.jpg"
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Screenshots (Multiple)</label>
+                <input type="file" name="screenshots" multiple accept="image/*"
                     style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
             </div>
 

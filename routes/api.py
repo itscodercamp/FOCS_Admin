@@ -74,6 +74,7 @@ def get_projects():
             projects_list.append({
                 'id': project.id,
                 'title': project.title,
+                'slug': project.slug,
                 'studentName': project.student_name,
                 'college': project.college,
                 'year': project.year,
@@ -137,6 +138,7 @@ def get_events():
             events_list.append({
                 'id': event.id,
                 'title': event.title,
+                'slug': event.slug,
                 'category': event.category,
                 'date': event.date,
                 'time': event.time,

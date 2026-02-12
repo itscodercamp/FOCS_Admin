@@ -34,6 +34,7 @@ class JobApplication(db.Model):
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(150), nullable=False)
+    slug = db.Column(db.String(150), unique=True)
     student_name = db.Column(db.String(100), nullable=False)
     college = db.Column(db.String(150))
     year = db.Column(db.String(20))
@@ -50,6 +51,7 @@ class Project(db.Model):
 class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(150), nullable=False)
+    slug = db.Column(db.String(150), unique=True)
     category = db.Column(db.String(50))  # Workshop, Seminar, etc.
     date = db.Column(db.String(50))
     time = db.Column(db.String(50))

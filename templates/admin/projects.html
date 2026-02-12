@@ -16,6 +16,7 @@
         <thead>
             <tr>
                 <th>ID</th>
+                <th>Thumbnail</th>
                 <th>Title</th>
                 <th>Student</th>
                 <th>College</th>
@@ -28,6 +29,14 @@
             {% for project in projects %}
             <tr>
                 <td>{{ project.id }}</td>
+                <td>
+                    {% if project.thumbnail %}
+                    <img src="{{ project.thumbnail }}" alt="Thumb"
+                        style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
+                    {% else %}
+                    <span style="color: var(--text-muted);">No Img</span>
+                    {% endif %}
+                </td>
                 <td>{{ project.title }}</td>
                 <td>{{ project.student_name }}</td>
                 <td>{{ project.college }}</td>

@@ -7,7 +7,7 @@
 </div>
 
 <div class="table-responsive" style="padding: 30px;">
-    <form method="POST" action="{{ url_for('admin.add_event') }}">
+    <form method="POST" action="{{ url_for('admin.add_event') }}" enctype="multipart/form-data">
         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
             <div>
                 <label style="display: block; margin-bottom: 8px; font-weight: 500;">Event Title *</label>
@@ -17,14 +17,19 @@
 
             <div>
                 <label style="display: block; margin-bottom: 8px; font-weight: 500;">Category</label>
-                <select name="category"
-                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
-                    <option value="Workshop">Workshop</option>
-                    <option value="Seminar">Seminar</option>
-                    <option value="Hackathon">Hackathon</option>
-                    <option value="Webinar">Webinar</option>
-                    <option value="Conference">Conference</option>
-                </select>
+                <div style="display: flex; gap: 10px;">
+                    <select name="category" id="categorySelect" onchange="toggleCustomCategory(this.value)"
+                        style="flex: 1; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
+                        <option value="Workshop">Workshop</option>
+                        <option value="Seminar">Seminar</option>
+                        <option value="Hackathon">Hackathon</option>
+                        <option value="Webinar">Webinar</option>
+                        <option value="Conference">Conference</option>
+                        <option value="Other">Other (Add New)</option>
+                    </select>
+                    <input type="text" name="custom_category" id="customCategory" placeholder="Enter Category Name"
+                        style="display: none; flex: 1; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
+                </div>
             </div>
 
             <div>
@@ -52,30 +57,38 @@
             </div>
 
             <div style="grid-column: 1 / -1;">
-                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Short Description</label>
-                <textarea name="short_desc" rows="3"
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Full Description *</label>
+                <textarea name="full_desc" rows="5" required
                     style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);"></textarea>
+                <p style="font-size: 12px; color: var(--text-muted); margin-top: 5px;">Short description will be
+                    automatically generated from this.</p>
             </div>
 
             <div style="grid-column: 1 / -1;">
-                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Full Description</label>
-                <textarea name="full_desc" rows="5"
-                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);"></textarea>
-            </div>
-
-            <div style="grid-column: 1 / -1;">
-                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Main Image URL</label>
-                <input type="url" name="main_image"
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Main Event Image</label>
+                <input type="file" name="main_image" accept="image/*"
                     style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
             </div>
 
             <div style="grid-column: 1 / -1;">
-                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Gallery (comma-separated
-                    URLs)</label>
-                <input type="text" name="gallery" placeholder="https://img1.jpg, https://img2.jpg"
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Gallery Images (Multiple)</label>
+                <input type="file" name="gallery" multiple accept="image/*"
                     style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
             </div>
         </div>
+
+        <script>
+            function toggleCustomCategory(value) {
+                const customInput = document.getElementById('customCategory');
+                if (value === 'Other') {
+                    customInput.style.display = 'block';
+                    customInput.required = true;
+                } else {
+                    customInput.style.display = 'none';
+                    customInput.required = false;
+                }
+            }
+        </script>
 
         <div style="margin-top: 30px; display: flex; gap: 10px;">
             <button type="submit" class="btn btn-primary">

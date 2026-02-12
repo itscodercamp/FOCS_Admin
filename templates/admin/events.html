@@ -16,6 +16,7 @@
         <thead>
             <tr>
                 <th>ID</th>
+                <th>Image</th>
                 <th>Title</th>
                 <th>Category</th>
                 <th>Date</th>
@@ -28,6 +29,14 @@
             {% for event in events %}
             <tr>
                 <td>{{ event.id }}</td>
+                <td>
+                    {% if event.main_image %}
+                    <img src="{{ event.main_image }}" alt="Event"
+                        style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
+                    {% else %}
+                    <span style="color: var(--text-muted);">No Img</span>
+                    {% endif %}
+                </td>
                 <td>{{ event.title }}</td>
                 <td><span
                         style="padding: 4px 8px; background: rgba(78, 115, 223, 0.1); color: var(--primary-color); border-radius: 4px; font-size: 0.85em;">{{
