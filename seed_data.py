@@ -2,7 +2,7 @@ import requests
 import json
 import random
 
-BASE_URL = "http://127.0.0.1:5000/api"
+BASE_URL = "http://82.29.165.213:5000/api"
 
 def print_response(response, name):
     if response.status_code == 201:

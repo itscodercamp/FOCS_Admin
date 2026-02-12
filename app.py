@@ -11,8 +11,17 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', f"sqlite:///{os.path.join(app.instance_path, 'database.db')}")
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-    # Enable CORS for all routes
-    CORS(app, resources={r"/api/*": {"origins": "*"}})
+    # Enable CORS for all routes - Allow all origins
+    CORS(app, resources={
+        r"/*": {
+            "origins": "*",
+            "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+            "allow_headers": ["Content-Type", "Authorization", "X-Requested-With"],
+            "expose_headers": ["Content-Type", "Authorization"],
+            "supports_credentials": False,
+            "max_age": 3600
+        }
+    })
 
     # Ensure instance folder exists
     try:

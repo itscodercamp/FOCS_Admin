@@ -2,7 +2,7 @@
 
 ## Base URL
 ```
-https://steve5911.pythonanywhere.com
+http://82.29.165.213:5000
 ```
 
 ---
@@ -207,12 +207,12 @@ https://steve5911.pythonanywhere.com
 
 ```javascript
 // Get all projects
-const projects = await fetch('https://steve5911.pythonanywhere.com/api/projects');
+const projects = await fetch('http://82.29.165.213:5000/api/projects');
 const data = await projects.json();
 console.log(data);
 
 // Add new project
-const response = await fetch('https://steve5911.pythonanywhere.com/api/projects', {
+const response = await fetch('http://82.29.165.213:5000/api/projects', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
@@ -236,10 +236,10 @@ const response = await fetch('https://steve5911.pythonanywhere.com/api/projects'
 
 ```bash
 # Get all events
-curl https://steve5911.pythonanywhere.com/api/events
+curl http://82.29.165.213:5000/api/events
 
 # Add new event
-curl -X POST https://steve5911.pythonanywhere.com/api/events \
+curl -X POST http://82.29.165.213:5000/api/events \
   -H "Content-Type: application/json" \
   -d '{
     "title": "AI Hackathon 2024",
@@ -279,7 +279,7 @@ CORS is now enabled for all `/api/*` routes. Frontend can call from any domain.
 
 ## 📞 Admin Panel
 
-**URL:** https://steve5911.pythonanywhere.com/admin/login
+**URL:** http://82.29.165.213:5000/admin/login
 **Credentials:** `admin` / `admin123`
 
 From the admin panel, you can:
