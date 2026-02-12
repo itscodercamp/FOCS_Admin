@@ -1,8 +1,16 @@
 from flask import Blueprint, request, jsonify
+import re
 from extensions import db
 from models import ContactQuery, PartnershipRequest, JobApplication, Project, Event, Vacancy
 
 api_bp = Blueprint('api', __name__)
+
+def slugify(text):
+    if not text: return ""
+    text = text.lower()
+    text = re.sub(r'[^\w\s-]', '', text)
+    text = re.sub(r'[\s_-]+', '-', text).strip('-')
+    return text
 
 @api_bp.route('/vacancies', methods=['GET'])
 def get_vacancies():
@@ -24,6 +32,38 @@ def get_vacancies():
             })
         
         return jsonify(vacancies_list), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@api_bp.route('/vacancies', methods=['POST'])
+def add_vacancy():
+    """Add new job vacancy (Admin use via API)"""
+    data = request.get_json()
+    if not data:
+        return jsonify({'error': 'No data provided'}), 400
+
+    try:
+        title = data.get('title')
+        # Auto-generate slug if not provided
+        slug = data.get('slug') or slugify(title)
+        
+        # Ensure unique slug
+        if Vacancy.query.filter_by(slug=slug).first():
+            import random
+            slug = f"{slug}-{random.randint(100, 999)}"
+
+        new_vacancy = Vacancy(
+            title=title,
+            slug=slug,
+            location=data.get('location'),
+            type=data.get('type'),
+            description=data.get('description'),
+            requirements=','.join(data.get('requirements', [])) if isinstance(data.get('requirements'), list) else data.get('requirements'),
+            is_active=True
+        )
+        db.session.add(new_vacancy)
+        db.session.commit()
+        return jsonify({'message': 'Job vacancy added successfully', 'id': new_vacancy.id}), 201
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
