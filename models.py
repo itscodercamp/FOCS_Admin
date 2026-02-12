@@ -30,3 +30,33 @@ class JobApplication(db.Model):
     resume_link = db.Column(db.String(255))
     cover_letter = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+class Project(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(150), nullable=False)
+    student_name = db.Column(db.String(100), nullable=False)
+    college = db.Column(db.String(150))
+    year = db.Column(db.String(20))
+    description = db.Column(db.Text)  # Short summary for card
+    full_description = db.Column(db.Text)  # Detailed description
+    duration = db.Column(db.String(50))
+    tech_stack = db.Column(db.Text)  # Stored as comma-separated string
+    thumbnail = db.Column(db.String(255))
+    screenshots = db.Column(db.Text)  # Stored as comma-separated URLs
+    live_link = db.Column(db.String(255))
+    repo_link = db.Column(db.String(255))
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+class Event(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(150), nullable=False)
+    category = db.Column(db.String(50))  # Workshop, Seminar, etc.
+    date = db.Column(db.String(50))
+    time = db.Column(db.String(50))
+    venue = db.Column(db.String(150))
+    organizer = db.Column(db.String(100))
+    short_desc = db.Column(db.Text)
+    full_desc = db.Column(db.Text)
+    main_image = db.Column(db.String(255))
+    gallery = db.Column(db.Text)  # Stored as comma-separated URLs
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)

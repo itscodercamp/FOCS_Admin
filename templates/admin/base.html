@@ -37,6 +37,12 @@
                 <li class="{% if request.endpoint == 'admin.careers' %}active{% endif %}">
                     <a href="{{ url_for('admin.careers') }}"><i class="fas fa-briefcase"></i> Careers</a>
                 </li>
+                <li class="{% if request.endpoint in ['admin.projects', 'admin.add_project'] %}active{% endif %}">
+                    <a href="{{ url_for('admin.projects') }}"><i class="fas fa-laptop-code"></i> Projects</a>
+                </li>
+                <li class="{% if request.endpoint in ['admin.events', 'admin.add_event'] %}active{% endif %}">
+                    <a href="{{ url_for('admin.events') }}"><i class="fas fa-calendar-alt"></i> Events</a>
+                </li>
             </ul>
         </nav>
 

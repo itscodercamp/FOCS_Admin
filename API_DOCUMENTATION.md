@@ -1,4 +1,4 @@
-# AI Labs Portal - API Documentation
+# AI Labs Portal - Updated API Documentation
 
 ## Base URL
 ```
@@ -11,71 +11,23 @@ https://steve5911.pythonanywhere.com
 
 ### 1. Contact Form (General Inquiry)
 
-**Purpose:** Submit general contact inquiries from users.
-
 **Endpoint:** `/api/contact`
-
 **Method:** `POST`
-
-**Headers:**
-```json
-{
-  "Content-Type": "application/json"
-}
-```
 
 **Request Body:**
 ```json
 {
-  "name": "User Name",
-  "email": "user@example.com",
-  "type": "Service Type (e.g., Web Dev, AI Services, Support)",
-  "message": "User message here..."
+  "name": "John Doe",
+  "email": "john@example.com",
+  "type": "Business Inquiry",
+  "message": "Hello, I need software..."
 }
 ```
 
-**Example Request (JavaScript Fetch):**
-```javascript
-const response = await fetch('https://steve5911.pythonanywhere.com/api/contact', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    name: "Rahul Sharma",
-    email: "rahul@example.com",
-    type: "Web Dev",
-    message: "I need help with my website development."
-  })
-});
-
-const data = await response.json();
-console.log(data);
-```
-
-**Example Request (Axios):**
-```javascript
-const response = await axios.post('https://steve5911.pythonanywhere.com/api/contact', {
-  name: "Rahul Sharma",
-  email: "rahul@example.com",
-  type: "Web Dev",
-  message: "I need help with my website development."
-});
-
-console.log(response.data);
-```
-
-**Success Response (201 Created):**
+**Success Response (201):**
 ```json
 {
   "message": "Contact query submitted successfully"
-}
-```
-
-**Error Response (400/500):**
-```json
-{
-  "error": "Error message here"
 }
 ```
 
@@ -83,68 +35,22 @@ console.log(response.data);
 
 ### 2. AI Labs Partnership (College/Institution)
 
-**Purpose:** Submit partnership requests from colleges/institutions for AI Labs.
-
 **Endpoint:** `/api/academy/partnership`
-
 **Method:** `POST`
-
-**Headers:**
-```json
-{
-  "Content-Type": "application/json"
-}
-```
 
 **Request Body:**
 ```json
 {
-  "collegeName": "ABC Engineering College",
-  "email": "principal@college.edu",
+  "collegeName": "RCOEM",
+  "email": "principal@rcoem.edu",
   "phone": "9876543210"
 }
 ```
 
-**Example Request (JavaScript Fetch):**
-```javascript
-const response = await fetch('https://steve5911.pythonanywhere.com/api/academy/partnership', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    collegeName: "Delhi Technological University",
-    email: "dean@dtu.ac.in",
-    phone: "9811223344"
-  })
-});
-
-const data = await response.json();
-console.log(data);
-```
-
-**Example Request (Axios):**
-```javascript
-const response = await axios.post('https://steve5911.pythonanywhere.com/api/academy/partnership', {
-  collegeName: "Delhi Technological University",
-  email: "dean@dtu.ac.in",
-  phone: "9811223344"
-});
-
-console.log(response.data);
-```
-
-**Success Response (201 Created):**
+**Success Response (201):**
 ```json
 {
   "message": "Partnership request submitted successfully"
-}
-```
-
-**Error Response (400/500):**
-```json
-{
-  "error": "Error message here"
 }
 ```
 
@@ -152,157 +58,233 @@ console.log(response.data);
 
 ### 3. Job Application (Careers)
 
-**Purpose:** Submit job applications for open positions.
-
 **Endpoint:** `/api/careers/apply`
-
 **Method:** `POST`
-
-**Headers:**
-```json
-{
-  "Content-Type": "application/json"
-}
-```
 
 **Request Body:**
 ```json
 {
-  "jobRole": "Senior Full Stack Developer",
-  "name": "Candidate Name",
-  "email": "candidate@email.com",
-  "resumeLink": "https://drive.google.com/file/...",
-  "coverLetter": "I am a good fit because..."
+  "name": "Jane Doe",
+  "email": "jane@example.com",
+  "resumeLink": "https://linkedin.com/in/jane",
+  "coverLetter": "I am a good fit because...",
+  "jobRole": "Senior Full Stack Developer"
 }
 ```
 
-**Example Request (JavaScript Fetch):**
-```javascript
-const response = await fetch('https://steve5911.pythonanywhere.com/api/careers/apply', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    jobRole: "Senior Full Stack Developer",
-    name: "Vikram Singh",
-    email: "vikram@example.com",
-    resumeLink: "https://linkedin.com/in/vikram-singh",
-    coverLetter: "I have 5 years of MERN stack experience..."
-  })
-});
-
-const data = await response.json();
-console.log(data);
-```
-
-**Example Request (Axios):**
-```javascript
-const response = await axios.post('https://steve5911.pythonanywhere.com/api/careers/apply', {
-  jobRole: "Senior Full Stack Developer",
-  name: "Vikram Singh",
-  email: "vikram@example.com",
-  resumeLink: "https://linkedin.com/in/vikram-singh",
-  coverLetter: "I have 5 years of MERN stack experience..."
-});
-
-console.log(response.data);
-```
-
-**Success Response (201 Created):**
+**Success Response (201):**
 ```json
 {
   "message": "Job application submitted successfully"
 }
 ```
 
-**Error Response (400/500):**
+---
+
+### 4. Projects (Student Showcases)
+
+#### 4.1. Get All Projects
+
+**Endpoint:** `/api/projects`
+**Method:** `GET`
+
+**Success Response (200):**
+```json
+[
+  {
+    "id": 1,
+    "title": "AgriTech AI",
+    "studentName": "Aarav Patel",
+    "college": "VNIT",
+    "year": "4th Year",
+    "description": "Smart agriculture platform...",
+    "fullDescription": "Detailed description of the project...",
+    "duration": "3 Months",
+    "techStack": ["Flutter", "Python", "TensorFlow"],
+    "thumbnail": "https://image-url.com/thumb.jpg",
+    "screenshots": ["https://image.com/1.jpg", "https://image.com/2.jpg"],
+    "liveLink": "https://agritech.app",
+    "repoLink": "https://github.com/...",
+    "timestamp": "2023-12-01T10:30:00"
+  }
+]
+```
+
+#### 4.2. Add New Project (Admin)
+
+**Endpoint:** `/api/projects`
+**Method:** `POST`
+
+**Request Body:**
 ```json
 {
-  "error": "Error message here"
+  "title": "AgriTech AI",
+  "studentName": "Aarav Patel",
+  "college": "VNIT",
+  "year": "4th Year",
+  "description": "Short summary for card...",
+  "fullDescription": "Detailed description...",
+  "duration": "3 Months",
+  "techStack": ["Flutter", "Python", "TensorFlow"],
+  "thumbnail": "https://image-url.com/thumb.jpg",
+  "screenshots": ["https://image.com/1.jpg", "https://image.com/2.jpg"],
+  "liveLink": "https://agritech.app",
+  "repoLink": "https://github.com/..."
+}
+```
+
+**Success Response (201):**
+```json
+{
+  "message": "Project added successfully",
+  "id": 1
 }
 ```
 
 ---
 
-## 🔒 CORS Information
+### 5. Events & Workshops
 
-The API currently does **NOT** have CORS enabled. If you're calling from a different domain (frontend), you may encounter CORS errors. 
+#### 5.1. Get All Events
 
-**Solution:** Request the backend admin to add CORS headers or use a proxy.
+**Endpoint:** `/api/events`
+**Method:** `GET`
 
----
-
-## 📝 Field Validations
-
-### Contact Form
-- `name`: Required, string
-- `email`: Required, valid email format
-- `type`: Optional, string (e.g., "Web Dev", "AI Services")
-- `message`: Required, string
-
-### Partnership Form
-- `collegeName`: Required, string
-- `email`: Required, valid email format
-- `phone`: Required, string (10 digits recommended)
-
-### Careers Form
-- `jobRole`: Required, string
-- `name`: Required, string
-- `email`: Required, valid email format
-- `resumeLink`: Optional, string (URL)
-- `coverLetter`: Optional, string
-
----
-
-## 🧪 Testing the API
-
-### Using cURL:
-
-**Contact API:**
-```bash
-curl -X POST https://steve5911.pythonanywhere.com/api/contact \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Test User","email":"test@example.com","type":"Testing","message":"This is a test message"}'
+**Success Response (200):**
+```json
+[
+  {
+    "id": 1,
+    "title": "GenAI Workshop",
+    "category": "Workshop",
+    "date": "Dec 15, 2023",
+    "time": "10:00 AM",
+    "venue": "Main Auditorium",
+    "organizer": "FOCS Team",
+    "shortDesc": "Introduction to Generative AI...",
+    "fullDesc": "Detailed workshop description...",
+    "mainImage": "https://image-url.com/banner.jpg",
+    "gallery": ["https://img1.jpg", "https://img2.jpg"],
+    "timestamp": "2023-11-20T09:00:00"
+  }
+]
 ```
 
-**Partnership API:**
-```bash
-curl -X POST https://steve5911.pythonanywhere.com/api/academy/partnership \
-  -H "Content-Type: application/json" \
-  -d '{"collegeName":"Test College","email":"test@college.edu","phone":"1234567890"}'
+#### 5.2. Add New Event (Admin)
+
+**Endpoint:** `/api/events`
+**Method:** `POST`
+
+**Request Body:**
+```json
+{
+  "title": "GenAI Workshop",
+  "category": "Workshop",
+  "date": "Dec 15, 2023",
+  "time": "10:00 AM",
+  "venue": "Auditorium",
+  "organizer": "FOCS Team",
+  "shortDesc": "Short summary...",
+  "fullDesc": "Detailed description...",
+  "mainImage": "https://image-url.com/banner.jpg",
+  "gallery": ["https://img1.jpg", "https://img2.jpg"]
+}
 ```
 
-**Careers API:**
-```bash
-curl -X POST https://steve5911.pythonanywhere.com/api/careers/apply \
-  -H "Content-Type: application/json" \
-  -d '{"jobRole":"Developer","name":"Test Candidate","email":"candidate@test.com","resumeLink":"https://example.com","coverLetter":"Test letter"}'
+**Success Response (201):**
+```json
+{
+  "message": "Event added successfully",
+  "id": 1
+}
 ```
-
-### Using Postman:
-1. Set method to `POST`
-2. Enter the endpoint URL
-3. Go to **Headers** tab, add: `Content-Type: application/json`
-4. Go to **Body** tab, select **raw** and **JSON**
-5. Paste the request body
-6. Click **Send**
 
 ---
 
-## ⚠️ Error Codes
+## 🧪 Testing Examples
 
-| Status Code | Meaning |
-|------------|---------|
-| 200 | OK - Request successful (not used in these APIs) |
-| 201 | Created - Data submitted successfully |
-| 400 | Bad Request - Missing or invalid data |
-| 500 | Internal Server Error - Server-side issue |
+### Using JavaScript Fetch (Projects)
+
+```javascript
+// Get all projects
+const projects = await fetch('https://steve5911.pythonanywhere.com/api/projects');
+const data = await projects.json();
+console.log(data);
+
+// Add new project
+const response = await fetch('https://steve5911.pythonanywhere.com/api/projects', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    title: "Smart Campus",
+    studentName: "Rahul Sharma",
+    college: "IIT Delhi",
+    year: "Final Year",
+    description: "IoT-based campus management system",
+    fullDescription: "Complete automation...",
+    duration: "6 Months",
+    techStack: ["React", "Node.js", "MongoDB", "Arduino"],
+    thumbnail: "https://example.com/thumb.jpg",
+    screenshots: ["https://example.com/1.jpg"],
+    liveLink: "https://smartcampus.com",
+    repoLink: "https://github.com/rahul/smart-campus"
+  })
+});
+```
+
+### Using cURL (Events)
+
+```bash
+# Get all events
+curl https://steve5911.pythonanywhere.com/api/events
+
+# Add new event
+curl -X POST https://steve5911.pythonanywhere.com/api/events \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "AI Hackathon 2024",
+    "category": "Hackathon",
+    "date": "Jan 20, 2024",
+    "time": "9:00 AM",
+    "venue": "Tech Park",
+    "organizer": "FOCS",
+    "shortDesc": "24-hour AI hackathon",
+    "fullDesc": "Build AI solutions for real-world problems",
+    "mainImage": "https://example.com/banner.jpg",
+    "gallery": ["https://example.com/1.jpg", "https://example.com/2.jpg"]
+  }'
+```
 
 ---
 
-## 📞 Support
+## 📝 Summary of All Endpoints
 
-For API issues or questions, contact the backend team or check the admin panel logs.
+| Endpoint | Method | Purpose |
+|----------|--------|---------|
+| `/api/contact` | POST | Submit contact inquiry |
+| `/api/academy/partnership` | POST | Submit partnership request |
+| `/api/careers/apply` | POST | Submit job application |
+| `/api/projects` | GET | Fetch all projects |
+| `/api/projects` | POST | Add new project |
+| `/api/events` | GET | Fetch all events |
+| `/api/events` | POST | Add new event |
 
-**Admin Panel URL:** https://steve5911.pythonanywhere.com/admin/login
+---
+
+## ✅ CORS Enabled
+
+CORS is now enabled for all `/api/*` routes. Frontend can call from any domain.
+
+---
+
+## 📞 Admin Panel
+
+**URL:** https://steve5911.pythonanywhere.com/admin/login
+**Credentials:** `admin` / `admin123`
+
+From the admin panel, you can:
+- View and delete Contact Inquiries
+- View and delete Partnership Requests
+- View and delete Job Applications
+- **View, add, and delete Projects**
+- **View, add, and delete Events**
