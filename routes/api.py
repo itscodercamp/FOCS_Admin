@@ -1,8 +1,31 @@
 from flask import Blueprint, request, jsonify
 from extensions import db
-from models import ContactQuery, PartnershipRequest, JobApplication, Project, Event
+from models import ContactQuery, PartnershipRequest, JobApplication, Project, Event, Vacancy
 
 api_bp = Blueprint('api', __name__)
+
+@api_bp.route('/vacancies', methods=['GET'])
+def get_vacancies():
+    """Get all active job vacancies for frontend"""
+    try:
+        vacancies = Vacancy.query.filter_by(is_active=True).order_by(Vacancy.timestamp.desc()).all()
+        vacancies_list = []
+        
+        for v in vacancies:
+            vacancies_list.append({
+                'id': v.id,
+                'title': v.title,
+                'slug': v.slug,
+                'location': v.location,
+                'type': v.type,
+                'description': v.description,
+                'requirements': v.requirements.split(',') if v.requirements else [],
+                'timestamp': v.timestamp.isoformat() if v.timestamp else None
+            })
+        
+        return jsonify(vacancies_list), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @api_bp.route('/contact', methods=['POST'])
 def contact():

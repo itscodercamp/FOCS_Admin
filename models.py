@@ -31,6 +31,17 @@ class JobApplication(db.Model):
     cover_letter = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
+class Vacancy(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    slug = db.Column(db.String(150), unique=True)
+    location = db.Column(db.String(100))
+    type = db.Column(db.String(50)) # Full-time, Part-time, Internship
+    description = db.Column(db.Text)
+    requirements = db.Column(db.Text) # Comma-separated or bullet points
+    is_active = db.Column(db.Boolean, default=True)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(150), nullable=False)

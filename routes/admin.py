@@ -5,7 +5,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import check_password_hash
 from werkzeug.utils import secure_filename
 from extensions import db
-from models import User, ContactQuery, PartnershipRequest, JobApplication, Project, Event
+from models import User, ContactQuery, PartnershipRequest, JobApplication, Project, Event, Vacancy
 
 admin_bp = Blueprint('admin', __name__)
 
@@ -117,6 +117,53 @@ def delete_career(id):
     db.session.commit()
     flash('Job application deleted successfully.', 'success')
     return redirect(url_for('admin.careers'))
+
+# --- Vacancies Routes ---
+@admin_bp.route('/vacancies')
+@login_required
+def vacancies():
+    all_vacancies = Vacancy.query.order_by(Vacancy.timestamp.desc()).all()
+    return render_template('admin/vacancies.html', vacancies=all_vacancies)
+
+@admin_bp.route('/vacancies/add', methods=['GET', 'POST'])
+@login_required
+def add_vacancy():
+    if request.method == 'POST':
+        try:
+            title = request.form.get('title')
+            slug = slugify(title)
+            # Ensure unique slug
+            existing = Vacancy.query.filter_by(slug=slug).first()
+            if existing:
+                import random
+                slug = f"{slug}-{random.randint(100, 999)}"
+
+            new_vacancy = Vacancy(
+                title=title,
+                slug=slug,
+                location=request.form.get('location'),
+                type=request.form.get('type'),
+                description=request.form.get('description'),
+                requirements=request.form.get('requirements'),
+                is_active=True
+            )
+            db.session.add(new_vacancy)
+            db.session.commit()
+            flash('Job vacancy added successfully!', 'success')
+            return redirect(url_for('admin.vacancies'))
+        except Exception as e:
+            flash(f'Error adding vacancy: {str(e)}', 'danger')
+    
+    return render_template('admin/add_vacancy.html')
+
+@admin_bp.route('/vacancies/delete/<int:id>', methods=['POST'])
+@login_required
+def delete_vacancy(id):
+    vacancy = Vacancy.query.get_or_404(id)
+    db.session.delete(vacancy)
+    db.session.commit()
+    flash('Job vacancy deleted successfully.', 'success')
+    return redirect(url_for('admin.vacancies'))
 
 # --- Projects Routes ---
 @admin_bp.route('/projects')

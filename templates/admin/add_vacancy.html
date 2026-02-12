@@ -1,0 +1,60 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<div style="margin-bottom: 30px;">
+    <h2 style="font-weight: 600;">Add New Job Opening</h2>
+    <p style="color: var(--text-muted);">Create a new job vacancy for applicants.</p>
+</div>
+
+<div class="table-responsive" style="padding: 30px;">
+    <form method="POST" action="{{ url_for('admin.add_vacancy') }}">
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+            <div style="grid-column: 1 / -1;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Job Title *</label>
+                <input type="text" name="title" required placeholder="e.g. Senior Frontend Developer"
+                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
+            </div>
+
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Location</label>
+                <input type="text" name="location" placeholder="e.g. Nagpur / Remote"
+                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
+            </div>
+
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Employment Type</label>
+                <select name="type"
+                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
+                    <option value="Full-time">Full-time</option>
+                    <option value="Part-time">Part-time</option>
+                    <option value="Internship">Internship</option>
+                    <option value="Contract">Contract</option>
+                </select>
+            </div>
+
+            <div style="grid-column: 1 / -1;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Job Description</label>
+                <textarea name="description" rows="5" placeholder="Responsibilities, overview, etc."
+                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);"></textarea>
+            </div>
+
+            <div style="grid-column: 1 / -1;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Requirements
+                    (comma-separated)</label>
+                <textarea name="requirements" rows="3" placeholder="React, Node.js, 3+ years experience..."
+                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);"></textarea>
+            </div>
+        </div>
+
+        <div style="margin-top: 30px; display: flex; gap: 10px;">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Post Job
+            </button>
+            <a href="{{ url_for('admin.vacancies') }}" class="btn"
+                style="background: var(--bg-color); color: var(--text-color); border: 1px solid var(--border-color); padding: 6px 12px; text-decoration: none; border-radius: 6px;">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

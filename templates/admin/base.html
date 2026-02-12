@@ -35,7 +35,10 @@
                     <a href="{{ url_for('admin.partnerships') }}"><i class="fas fa-handshake"></i> Partnerships</a>
                 </li>
                 <li class="{% if request.endpoint == 'admin.careers' %}active{% endif %}">
-                    <a href="{{ url_for('admin.careers') }}"><i class="fas fa-briefcase"></i> Careers</a>
+                    <a href="{{ url_for('admin.careers') }}"><i class="fas fa-briefcase"></i> Job Applications</a>
+                </li>
+                <li class="{% if request.endpoint in ['admin.vacancies', 'admin.add_vacancy'] %}active{% endif %}">
+                    <a href="{{ url_for('admin.vacancies') }}"><i class="fas fa-list-ul"></i> Job Vacancies</a>
                 </li>
                 <li class="{% if request.endpoint in ['admin.projects', 'admin.add_project'] %}active{% endif %}">
                     <a href="{{ url_for('admin.projects') }}"><i class="fas fa-laptop-code"></i> Projects</a>

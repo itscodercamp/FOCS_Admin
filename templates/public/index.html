@@ -57,13 +57,19 @@
     </section>
 
     <section id="careers" style="background-color: #f9f9f9;">
-        <h2>Join Our Team</h2>
+        <h2>Open Positions</h2>
+        <div id="jobListings"
+            style="max-width: 1000px; margin: 0 auto 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; padding: 0 20px;">
+            <p style="text-align: center; color: var(--text-muted);">Loading current job openings...</p>
+        </div>
+
+        <h2 id="applyTitle">Submit Application</h2>
         <div class="form-container">
             <form id="careersForm">
                 <div class="form-group">
                     <label>Job Role</label>
-                    <input type="text" class="form-control" name="jobRole" placeholder="e.g. Full Stack Developer"
-                        required>
+                    <input type="text" class="form-control" name="jobRole" id="jobRoleInput"
+                        placeholder="Select a job above or type here" required>
                 </div>
                 <div class="form-group">
                     <label>Full Name</label>
@@ -178,6 +184,50 @@
             submitForm('/api/careers/apply', data, e.target);
         });
 
+        // Fetch and display job vacancies
+        async function loadVacancies() {
+            const listingsContainer = document.getElementById('jobListings');
+            try {
+                const response = await fetch(API_BASE_URL + '/api/vacancies');
+                const vacancies = await response.json();
+
+                if (vacancies.length === 0) {
+                    listingsContainer.innerHTML = '<p style="text-align: center; color: var(--text-muted); grid-column: 1/-1;">Check back later for new opportunities!</p>';
+                    return;
+                }
+
+                listingsContainer.innerHTML = '';
+                vacancies.forEach(job => {
+                    const card = document.createElement('div');
+                    card.style = "background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #eee; display: flex; flex-direction: column;";
+                    card.innerHTML = `
+                        <h3 style="margin-bottom: 10px; color: var(--primary);">${job.title}</h3>
+                        <p style="font-size: 0.9em; color: var(--text-muted); margin-bottom: 5px;"><i class="fas fa-map-marker-alt"></i> ${job.location || 'Remote'}</p>
+                        <p style="font-size: 0.9em; color: var(--text-muted); margin-bottom: 15px;"><i class="fas fa-clock"></i> ${job.type || 'Full-time'}</p>
+                        <p style="font-size: 0.95em; color: #555; margin-bottom: 20px; line-height: 1.6;">${job.description || 'No description available.'}</p>
+                        <button onclick="applyForJob('${job.title}')" class="btn" style="width: 100%; margin-top: auto; padding: 10px; font-size: 0.9em;">Apply Now</button>
+                    `;
+                    listingsContainer.appendChild(card);
+                });
+            } catch (error) {
+                console.error('Error loading vacancies:', error);
+                listingsContainer.innerHTML = '<p style="text-align: center; color: #ff4d4d; grid-column: 1/-1;">Failed to load job openings.</p>';
+            }
+        }
+
+        function applyForJob(title) {
+            const input = document.getElementById('jobRoleInput');
+            input.value = title;
+            document.getElementById('applyTitle').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            input.classList.add('highlight');
+            setTimeout(() => input.classList.remove('highlight'), 2000);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadVacancies();
+        });
+
         // Smooth scroll for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -189,6 +239,18 @@
             });
         });
     </script>
+    <style>
+        .highlight {
+            border-color: var(--primary) !important;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        @font-awesome-import {
+            /* Font awesome already linked in base, but index.html need it for icons if not in head */
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </body>
 
 </html>
