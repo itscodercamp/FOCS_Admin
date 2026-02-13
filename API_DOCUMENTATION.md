@@ -1,64 +1,72 @@
-# AI Labs Portal - Updated API Documentation
+# 🚀 AI Labs Portal - Comprehensive API Documentation
 
-## Base URL
+## 🌐 Base URL
 ```
 http://82.29.165.213:5000
 ```
 
 ---
 
-## 📌 API Endpoints
+## 📌 API Endpoints Summary
 
-### 1. Contact Form (General Inquiry)
+| Endpoint | Method | Purpose |
+|----------|--------|---------|
+| `/api/contact` | POST | Submit contact inquiry |
+| `/api/academy/partnership` | POST | Submit partnership request |
+| `/api/careers/apply` | POST | Submit job application |
+| `/api/vacancies` | GET | Fetch all active job vacancies |
+| `/api/vacancies` | POST | Add new job vacancy (Admin) |
+| `/api/projects` | GET | Fetch all projects |
+| `/api/projects` | POST | Add new project (Admin) |
+| `/api/events` | GET | Fetch all events |
+| `/api/events` | POST | Add new event (Admin) |
 
-**Endpoint:** `/api/contact`
+---
+
+## 🛠️ Detailed Endpoint Documentation
+
+### 1. Job Vacancies (New ✨)
+
+#### 1.1. Get All Vacancies
+**Endpoint:** `/api/vacancies`  
+**Method:** `GET`
+
+**Success Response (200):**
+```json
+[
+  {
+    "id": 1,
+    "title": "Full Stack Developer",
+    "slug": "full-stack-developer",
+    "location": "Remote / Nagpur",
+    "type": "Full Time",
+    "description": "We are looking for...",
+    "requirements": ["React", "Python", "Flask"],
+    "timestamp": "2024-02-13T10:00:00"
+  }
+]
+```
+
+#### 1.2. Add New Vacancy (Admin)
+**Endpoint:** `/api/vacancies`  
 **Method:** `POST`
 
 **Request Body:**
 ```json
 {
-  "name": "John Doe",
-  "email": "john@example.com",
-  "type": "Business Inquiry",
-  "message": "Hello, I need software..."
-}
-```
-
-**Success Response (201):**
-```json
-{
-  "message": "Contact query submitted successfully"
+  "title": "UI/UX Designer",
+  "location": "Nagpur",
+  "type": "Internship",
+  "description": "Designing modern interfaces...",
+  "requirements": ["Figma", "Adobe XD"]
 }
 ```
 
 ---
 
-### 2. AI Labs Partnership (College/Institution)
+### 2. Job Application (Careers)
 
-**Endpoint:** `/api/academy/partnership`
-**Method:** `POST`
-
-**Request Body:**
-```json
-{
-  "collegeName": "RCOEM",
-  "email": "principal@rcoem.edu",
-  "phone": "9876543210"
-}
-```
-
-**Success Response (201):**
-```json
-{
-  "message": "Partnership request submitted successfully"
-}
-```
-
----
-
-### 3. Job Application (Careers)
-
-**Endpoint:** `/api/careers/apply`
+**Endpoint:** `/api/careers/apply`  
 **Method:** `POST`
 
 **Request Body:**
@@ -72,20 +80,45 @@ http://82.29.165.213:5000
 }
 ```
 
-**Success Response (201):**
+---
+
+### 3. Contact Form (General Inquiry)
+
+**Endpoint:** `/api/contact`  
+**Method:** `POST`
+
+**Request Body:**
 ```json
 {
-  "message": "Job application submitted successfully"
+  "name": "John Doe",
+  "email": "john@example.com",
+  "type": "Business Inquiry",
+  "message": "Hello, I need software..."
 }
 ```
 
 ---
 
-### 4. Projects (Student Showcases)
+### 4. AI Labs Partnership (College/Institution)
 
-#### 4.1. Get All Projects
+**Endpoint:** `/api/academy/partnership`  
+**Method:** `POST`
 
-**Endpoint:** `/api/projects`
+**Request Body:**
+```json
+{
+  "collegeName": "RCOEM",
+  "email": "principal@rcoem.edu",
+  "phone": "9876543210"
+}
+```
+
+---
+
+### 5. Projects (Student Showcases)
+
+#### 5.1. Get All Projects
+**Endpoint:** `/api/projects`  
 **Method:** `GET`
 
 **Success Response (200):**
@@ -95,59 +128,18 @@ http://82.29.165.213:5000
     "id": 1,
     "title": "AgriTech AI",
     "studentName": "Aarav Patel",
-    "college": "VNIT",
-    "year": "4th Year",
-    "description": "Smart agriculture platform...",
-    "fullDescription": "Detailed description of the project...",
-    "duration": "3 Months",
     "techStack": ["Flutter", "Python", "TensorFlow"],
-    "thumbnail": "https://image-url.com/thumb.jpg",
-    "screenshots": ["https://image.com/1.jpg", "https://image.com/2.jpg"],
-    "liveLink": "https://agritech.app",
-    "repoLink": "https://github.com/...",
-    "timestamp": "2023-12-01T10:30:00"
+    "thumbnail": "https://image-url.com/thumb.jpg"
   }
 ]
 ```
 
-#### 4.2. Add New Project (Admin)
-
-**Endpoint:** `/api/projects`
-**Method:** `POST`
-
-**Request Body:**
-```json
-{
-  "title": "AgriTech AI",
-  "studentName": "Aarav Patel",
-  "college": "VNIT",
-  "year": "4th Year",
-  "description": "Short summary for card...",
-  "fullDescription": "Detailed description...",
-  "duration": "3 Months",
-  "techStack": ["Flutter", "Python", "TensorFlow"],
-  "thumbnail": "https://image-url.com/thumb.jpg",
-  "screenshots": ["https://image.com/1.jpg", "https://image.com/2.jpg"],
-  "liveLink": "https://agritech.app",
-  "repoLink": "https://github.com/..."
-}
-```
-
-**Success Response (201):**
-```json
-{
-  "message": "Project added successfully",
-  "id": 1
-}
-```
-
 ---
 
-### 5. Events & Workshops
+### 6. Events & Workshops
 
-#### 5.1. Get All Events
-
-**Endpoint:** `/api/events`
+#### 6.1. Get All Events
+**Endpoint:** `/api/events`  
 **Method:** `GET`
 
 **Success Response (200):**
@@ -157,134 +149,34 @@ http://82.29.165.213:5000
     "id": 1,
     "title": "GenAI Workshop",
     "category": "Workshop",
-    "date": "Dec 15, 2023",
-    "time": "10:00 AM",
-    "venue": "Main Auditorium",
-    "organizer": "FOCS Team",
-    "shortDesc": "Introduction to Generative AI...",
-    "fullDesc": "Detailed workshop description...",
-    "mainImage": "https://image-url.com/banner.jpg",
-    "gallery": ["https://img1.jpg", "https://img2.jpg"],
-    "timestamp": "2023-11-20T09:00:00"
+    "date": "Dec 15, 2023"
   }
 ]
 ```
 
-#### 5.2. Add New Event (Admin)
+---
 
-**Endpoint:** `/api/events`
-**Method:** `POST`
+## 🧪 Integration & Testing
 
-**Request Body:**
-```json
-{
-  "title": "GenAI Workshop",
-  "category": "Workshop",
-  "date": "Dec 15, 2023",
-  "time": "10:00 AM",
-  "venue": "Auditorium",
-  "organizer": "FOCS Team",
-  "shortDesc": "Short summary...",
-  "fullDesc": "Detailed description...",
-  "mainImage": "https://image-url.com/banner.jpg",
-  "gallery": ["https://img1.jpg", "https://img2.jpg"]
-}
-```
+### 1. API Testing Dashboard
+You can test all APIs visually at:
+`http://82.29.165.213:5000/test-api`
 
-**Success Response (201):**
-```json
-{
-  "message": "Event added successfully",
-  "id": 1
-}
-```
+### 2. Reusable JS Module (`static/js/api.js`)
+We have a modular API handler for the frontend:
+- `getVacancies()`
+- `submitCareerForm(formData)`
+- `submitContactForm(formData)`
+- `getProjects()`
+- `getEvents()`
 
 ---
 
-## 🧪 Testing Examples
-
-### Using JavaScript Fetch (Projects)
-
-```javascript
-// Get all projects
-const projects = await fetch('http://82.29.165.213:5000/api/projects');
-const data = await projects.json();
-console.log(data);
-
-// Add new project
-const response = await fetch('http://82.29.165.213:5000/api/projects', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    title: "Smart Campus",
-    studentName: "Rahul Sharma",
-    college: "IIT Delhi",
-    year: "Final Year",
-    description: "IoT-based campus management system",
-    fullDescription: "Complete automation...",
-    duration: "6 Months",
-    techStack: ["React", "Node.js", "MongoDB", "Arduino"],
-    thumbnail: "https://example.com/thumb.jpg",
-    screenshots: ["https://example.com/1.jpg"],
-    liveLink: "https://smartcampus.com",
-    repoLink: "https://github.com/rahul/smart-campus"
-  })
-});
-```
-
-### Using cURL (Events)
-
-```bash
-# Get all events
-curl http://82.29.165.213:5000/api/events
-
-# Add new event
-curl -X POST http://82.29.165.213:5000/api/events \
-  -H "Content-Type: application/json" \
-  -d '{
-    "title": "AI Hackathon 2024",
-    "category": "Hackathon",
-    "date": "Jan 20, 2024",
-    "time": "9:00 AM",
-    "venue": "Tech Park",
-    "organizer": "FOCS",
-    "shortDesc": "24-hour AI hackathon",
-    "fullDesc": "Build AI solutions for real-world problems",
-    "mainImage": "https://example.com/banner.jpg",
-    "gallery": ["https://example.com/1.jpg", "https://example.com/2.jpg"]
-  }'
-```
-
----
-
-## 📝 Summary of All Endpoints
-
-| Endpoint | Method | Purpose |
-|----------|--------|---------|
-| `/api/contact` | POST | Submit contact inquiry |
-| `/api/academy/partnership` | POST | Submit partnership request |
-| `/api/careers/apply` | POST | Submit job application |
-| `/api/projects` | GET | Fetch all projects |
-| `/api/projects` | POST | Add new project |
-| `/api/events` | GET | Fetch all events |
-| `/api/events` | POST | Add new event |
+## � Admin Panel
+**URL:** `http://82.29.165.213:5000/admin/login`  
+**Credentials:** `admin` / `admin123`
 
 ---
 
 ## ✅ CORS Enabled
-
-CORS is now enabled for all `/api/*` routes. Frontend can call from any domain.
-
----
-
-## 📞 Admin Panel
-
-**URL:** http://82.29.165.213:5000/admin/login
-**Credentials:** `admin` / `admin123`
-
-From the admin panel, you can:
-- View and delete Contact Inquiries
-- View and delete Partnership Requests
-- View and delete Job Applications
-- **View, add, and delete Projects**
-- **View, add, and delete Events**
+CORS is enabled for all `/api/*` routes. Frontend can call from any domain.
