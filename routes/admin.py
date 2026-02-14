@@ -92,12 +92,6 @@ def view_contact(id):
     contact = ContactQuery.query.get_or_404(id)
     return render_template('admin/view_contact.html', contact=contact)
 
-@admin_bp.route('/contacts/view/<int:id>')
-@login_required
-def view_contact(id):
-    contact = ContactQuery.query.get_or_404(id)
-    return render_template('admin/view_contact.html', contact=contact)
-
 # --- Partnership Routes ---
 @admin_bp.route('/partnerships')
 @login_required
