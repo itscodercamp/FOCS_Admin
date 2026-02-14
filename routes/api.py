@@ -156,6 +156,38 @@ def get_projects():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@api_bp.route('/projects/<id_or_slug>', methods=['GET'])
+def get_project(id_or_slug):
+    """Get single project details by ID or Slug"""
+    try:
+        if id_or_slug.isdigit():
+            project = Project.query.get(int(id_or_slug))
+        else:
+            project = Project.query.filter_by(slug=id_or_slug).first()
+            
+        if not project:
+            return jsonify({'error': 'Project not found'}), 404
+            
+        return jsonify({
+            'id': project.id,
+            'title': project.title,
+            'slug': project.slug,
+            'studentName': project.student_name,
+            'college': project.college,
+            'year': project.year,
+            'description': project.description,
+            'fullDescription': project.full_description,
+            'duration': project.duration,
+            'techStack': project.tech_stack.split(',') if project.tech_stack else [],
+            'thumbnail': project.thumbnail,
+            'screenshots': project.screenshots.split(',') if project.screenshots else [],
+            'liveLink': project.live_link,
+            'repoLink': project.repo_link,
+            'timestamp': project.timestamp.isoformat() if project.timestamp else None
+        }), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 @api_bp.route('/projects', methods=['POST'])
 def add_project():
     """Add new project (Admin use)"""
@@ -215,6 +247,36 @@ def get_events():
             })
         
         return jsonify(events_list), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@api_bp.route('/events/<id_or_slug>', methods=['GET'])
+def get_event(id_or_slug):
+    """Get single event details by ID or Slug"""
+    try:
+        if id_or_slug.isdigit():
+            event = Event.query.get(int(id_or_slug))
+        else:
+            event = Event.query.filter_by(slug=id_or_slug).first()
+            
+        if not event:
+            return jsonify({'error': 'Event not found'}), 404
+            
+        return jsonify({
+            'id': event.id,
+            'title': event.title,
+            'slug': event.slug,
+            'category': event.category,
+            'date': event.date,
+            'time': event.time,
+            'venue': event.venue,
+            'organizer': event.organizer,
+            'shortDesc': event.short_desc,
+            'fullDesc': event.full_desc,
+            'mainImage': event.main_image,
+            'gallery': event.gallery.split(',') if event.gallery else [],
+            'timestamp': event.timestamp.isoformat() if event.timestamp else None
+        }), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 

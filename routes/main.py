@@ -4,7 +4,7 @@ main_bp = Blueprint('main', __name__)
 
 @main_bp.route('/')
 def index():
-    return render_template('public/index.html')
+    return redirect(url_for('admin.login'))
 
 @main_bp.route('/test-api')
 def test_api():

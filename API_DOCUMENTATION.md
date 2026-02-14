@@ -1,113 +1,78 @@
-# 🚀 AI Labs Portal - Comprehensive API Documentation
+# 🚀 AI Labs Portal - Official API Documentation (Final)
 
-## 🌐 Base URL
-```
-http://82.29.165.213:5000
-```
-
----
-
-## 📌 API Endpoints Summary
-
-| Endpoint | Method | Purpose |
-|----------|--------|---------|
-| `/api/contact` | POST | Submit contact inquiry |
-| `/api/academy/partnership` | POST | Submit partnership request |
-| `/api/careers/apply` | POST | Submit job application |
-| `/api/vacancies` | GET | Fetch all active job vacancies |
-| `/api/vacancies` | POST | Add new job vacancy (Admin) |
-| `/api/projects` | GET | Fetch all projects |
-| `/api/projects` | POST | Add new project (Admin) |
-| `/api/events` | GET | Fetch all events |
-| `/api/events` | POST | Add new event (Admin) |
+## 🌐 Server Details
+*   **Base URL:** `https://apis.focsit.in`
+*   **API Root:** `https://apis.focsit.in/api`
+*   **Image/Static Root:** `https://apis.focsit.in` (No `/api` prefix for images)
 
 ---
 
-## 🛠️ Detailed Endpoint Documentation
+## 🖼️ Special Instruction: Handling Images
+Backend se images ke relative paths milte hain (e.g., `/static/uploads/events/img.jpg`).
+**Frontend fix:** Har image URL ke aage Base URL lagana compulsory hai.
+*   **Correct URL:** `https://apis.focsit.in/static/uploads/events/your_image.jpg`
 
-### 1. Job Vacancies (New ✨)
+---
 
-#### 1.1. Get All Vacancies
-**Endpoint:** `/api/vacancies`  
-**Method:** `GET`
+## 📌 1. Job Vacancies (Careers Page)
 
-**Success Response (200):**
+### **Get All Active Jobs**
+*   **Endpoint:** `/api/vacancies`
+*   **Method:** `GET`
+*   **Purpose:** Frontend par available jobs dikhane ke liye.
+*   **Response Body:**
 ```json
 [
   {
     "id": 1,
     "title": "Full Stack Developer",
-    "slug": "full-stack-developer",
-    "location": "Remote / Nagpur",
+    "location": "Remote",
     "type": "Full Time",
-    "description": "We are looking for...",
-    "requirements": ["React", "Python", "Flask"],
-    "timestamp": "2024-02-13T10:00:00"
+    "description": "Job description here...",
+    "requirements": "React, Python, Flask",
+    "timestamp": "2024-02-14T10:00:00"
   }
 ]
 ```
 
-#### 1.2. Add New Vacancy (Admin)
-**Endpoint:** `/api/vacancies`  
-**Method:** `POST`
-
-**Request Body:**
-```json
-{
-  "title": "UI/UX Designer",
-  "location": "Nagpur",
-  "type": "Internship",
-  "description": "Designing modern interfaces...",
-  "requirements": ["Figma", "Adobe XD"]
-}
-```
-
 ---
 
-### 2. Job Application (Careers)
+## 📌 2. Form Submissions
 
-**Endpoint:** `/api/careers/apply`  
-**Method:** `POST`
-
-**Request Body:**
-```json
-{
-  "name": "Jane Doe",
-  "email": "jane@example.com",
-  "resumeLink": "https://linkedin.com/in/jane",
-  "coverLetter": "I am a good fit because...",
-  "jobRole": "Senior Full Stack Developer"
-}
-```
-
----
-
-### 3. Contact Form (General Inquiry)
-
-**Endpoint:** `/api/contact`  
-**Method:** `POST`
-
-**Request Body:**
+### **2.1. Submit Job Application**
+*   **Endpoint:** `/api/careers/apply`
+*   **Method:** `POST`
+*   **Request Body:**
 ```json
 {
   "name": "John Doe",
   "email": "john@example.com",
-  "type": "Business Inquiry",
-  "message": "Hello, I need software..."
+  "jobRole": "Full Stack Developer",
+  "resumeLink": "https://drive.google.com/...",
+  "coverLetter": "Interested in working..."
 }
 ```
 
----
-
-### 4. AI Labs Partnership (College/Institution)
-
-**Endpoint:** `/api/academy/partnership`  
-**Method:** `POST`
-
-**Request Body:**
+### **2.2. Contact Form**
+*   **Endpoint:** `/api/contact`
+*   **Method:** `POST`
+*   **Request Body:**
 ```json
 {
-  "collegeName": "RCOEM",
+  "name": "Jane User",
+  "email": "jane@example.com",
+  "type": "General Inquiry",
+  "message": "Hello, I want to know about..."
+}
+```
+
+### **2.3. Partnership Request**
+*   **Endpoint:** `/api/academy/partnership`
+*   **Method:** `POST`
+*   **Request Body:**
+```json
+{
+  "collegeName": "RCOEM Nagpur",
   "email": "principal@rcoem.edu",
   "phone": "9876543210"
 }
@@ -115,68 +80,21 @@ http://82.29.165.213:5000
 
 ---
 
-### 5. Projects (Student Showcases)
+## 📌 3. Content Showcase
 
-#### 5.1. Get All Projects
-**Endpoint:** `/api/projects`  
-**Method:** `GET`
+### **3.1. Projects (Student Showcases)**
+*   **Get All Projects:** `GET /api/projects`
+*   **Get Single Project:** `GET /api/projects/<id_or_slug>`
+*   **Important Fields:** `thumbnail` (main image URL), `screenshots` (comma-separated URL list).
 
-**Success Response (200):**
-```json
-[
-  {
-    "id": 1,
-    "title": "AgriTech AI",
-    "studentName": "Aarav Patel",
-    "techStack": ["Flutter", "Python", "TensorFlow"],
-    "thumbnail": "https://image-url.com/thumb.jpg"
-  }
-]
-```
+### **3.2. Events & Workshops**
+*   **Get All Events:** `GET /api/events`
+*   **Get Single Event:** `GET /api/events/<id_or_slug>`
+*   **Important Fields:** `main_image` (banner URL), `gallery` (comma-separated URL list).
 
 ---
 
-### 6. Events & Workshops
-
-#### 6.1. Get All Events
-**Endpoint:** `/api/events`  
-**Method:** `GET`
-
-**Success Response (200):**
-```json
-[
-  {
-    "id": 1,
-    "title": "GenAI Workshop",
-    "category": "Workshop",
-    "date": "Dec 15, 2023"
-  }
-]
-```
-
----
-
-## 🧪 Integration & Testing
-
-### 1. API Testing Dashboard
-You can test all APIs visually at:
-`http://82.29.165.213:5000/test-api`
-
-### 2. Reusable JS Module (`static/js/api.js`)
-We have a modular API handler for the frontend:
-- `getVacancies()`
-- `submitCareerForm(formData)`
-- `submitContactForm(formData)`
-- `getProjects()`
-- `getEvents()`
-
----
-
-## � Admin Panel
-**URL:** `http://82.29.165.213:5000/admin/login`  
-**Credentials:** `admin` / `admin123`
-
----
-
-## ✅ CORS Enabled
-CORS is enabled for all `/api/*` routes. Frontend can call from any domain.
+## 🧪 Testing & Debugging
+1.  **Visual Testing Dashboard:** `https://apis.focsit.in/test-api`
+2.  **Admin Login:** `https://apis.focsit.in/admin/login`
+3.  **CORS:** Enabled for all domains.
