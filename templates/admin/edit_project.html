@@ -1,0 +1,97 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<div style="margin-bottom: 30px;">
+    <h2 style="font-weight: 600;">Edit Project</h2>
+    <p style="color: var(--text-muted);">Update project details.</p>
+</div>
+
+<div class="table-responsive" style="padding: 30px;">
+    <form method="POST" action="{{ url_for('admin.edit_project', id=project.id) }}" enctype="multipart/form-data">
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Project Title *</label>
+                <input type="text" name="title" required value="{{ project.title }}"
+                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
+            </div>
+
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Student Name *</label>
+                <input type="text" name="student_name" required value="{{ project.student_name }}"
+                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
+            </div>
+
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">College</label>
+                <input type="text" name="college" value="{{ project.college }}"
+                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
+            </div>
+
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Year</label>
+                <input type="text" name="year" value="{{ project.year }}"
+                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
+            </div>
+
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Duration</label>
+                <input type="text" name="duration" value="{{ project.duration }}"
+                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
+            </div>
+
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Tech Stack
+                    (comma-separated)</label>
+                <input type="text" name="tech_stack" value="{{ project.tech_stack }}"
+                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
+            </div>
+
+            <div style="grid-column: 1 / -1;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Full Description *</label>
+                <textarea name="full_description" rows="5" required
+                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">{{ project.full_description }}</textarea>
+            </div>
+
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Thumbnail Image</label>
+                <input type="file" name="thumbnail" accept="image/*"
+                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
+                {% if project.thumbnail %}
+                <p class="mt-2"><small>Current: <a href="{{ project.thumbnail }}" target="_blank">View</a></small></p>
+                {% endif %}
+            </div>
+
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Add Screenshots</label>
+                <input type="file" name="screenshots" multiple accept="image/*"
+                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
+                {% if project.screenshots %}
+                <p class="mt-2"><small>Existing screenshots will remain. New ones will be appended.</small></p>
+                {% endif %}
+            </div>
+
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Live Link</label>
+                <input type="url" name="live_link" value="{{ project.live_link or '' }}"
+                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
+            </div>
+
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Repository Link</label>
+                <input type="url" name="repo_link" value="{{ project.repo_link or '' }}"
+                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
+            </div>
+        </div>
+
+        <div style="margin-top: 30px; display: flex; gap: 10px;">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Update Project
+            </button>
+            <a href="{{ url_for('admin.projects') }}" class="btn"
+                style="background: var(--bg-color); color: var(--text-color); border: 1px solid var(--border-color); padding: 6px 12px; text-decoration: none; border-radius: 6px;">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

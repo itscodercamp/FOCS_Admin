@@ -1,0 +1,53 @@
+{% extends 'admin/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Job Application Details</h4>
+                <a href="{{ url_for('admin.careers') }}" class="btn btn-outline-dark btn-sm">Back</a>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <tr>
+                        <th style="width: 30%">Date & Time</th>
+                        <td>{{ app.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Applicant Name</th>
+                        <td>{{ app.name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Job Role</th>
+                        <td>{{ app.job_role }}</td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td><a href="mailto:{{ app.email }}">{{ app.email }}</a></td>
+                    </tr>
+                    <tr>
+                        <th>Resume Link</th>
+                        <td>
+                            {% if app.resume_link %}
+                            <a href="{{ app.resume_link }}" target="_blank" class="btn btn-sm btn-primary">View
+                                Resume</a>
+                            {% else %}
+                            <span class="text-muted">Not provided</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Cover Letter</th>
+                        <td>
+                            <div class="p-3 bg-light border rounded">
+                                {{ app.cover_letter | nl2br }}
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

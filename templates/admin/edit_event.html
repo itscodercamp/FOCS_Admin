@@ -1,0 +1,113 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<div style="margin-bottom: 30px;">
+    <h2 style="font-weight: 600;">Edit Event</h2>
+    <p style="color: var(--text-muted);">Update event details.</p>
+</div>
+
+<div class="table-responsive" style="padding: 30px;">
+    <form method="POST" action="{{ url_for('admin.edit_event', id=event.id) }}" enctype="multipart/form-data">
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Event Title *</label>
+                <input type="text" name="title" required value="{{ event.title }}"
+                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
+            </div>
+
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Category</label>
+                <div style="display: flex; gap: 10px;">
+                    <select name="category" id="categorySelect" onchange="toggleCustomCategory(this.value)"
+                        style="flex: 1; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
+                        <option value="Workshop" {% if event.category=='Workshop' %}selected{% endif %}>Workshop
+                        </option>
+                        <option value="Seminar" {% if event.category=='Seminar' %}selected{% endif %}>Seminar</option>
+                        <option value="Hackathon" {% if event.category=='Hackathon' %}selected{% endif %}>Hackathon
+                        </option>
+                        <option value="Webinar" {% if event.category=='Webinar' %}selected{% endif %}>Webinar</option>
+                        <option value="Conference" {% if event.category=='Conference' %}selected{% endif %}>Conference
+                        </option>
+                        <option value="Other" {% if event.category not in ['Workshop', 'Seminar' , 'Hackathon'
+                            , 'Webinar' , 'Conference' ] %}selected{% endif %}>Other (Add New)</option>
+                    </select>
+                    <input type="text" name="custom_category" id="customCategory" placeholder="Enter Category Name"
+                        value="{{ event.category if event.category not in ['Workshop', 'Seminar', 'Hackathon', 'Webinar', 'Conference'] else '' }}"
+                        style="display: {% if event.category not in ['Workshop', 'Seminar', 'Hackathon', 'Webinar', 'Conference'] %}block{% else %}none{% endif %}; flex: 1; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
+                </div>
+            </div>
+
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Date</label>
+                <input type="text" name="date" value="{{ event.date }}"
+                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
+            </div>
+
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Time</label>
+                <input type="text" name="time" value="{{ event.time }}"
+                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
+            </div>
+
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Venue</label>
+                <input type="text" name="venue" value="{{ event.venue }}"
+                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
+            </div>
+
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Organizer</label>
+                <input type="text" name="organizer" value="{{ event.organizer }}"
+                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
+            </div>
+
+            <div style="grid-column: 1 / -1;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Full Description *</label>
+                <textarea name="full_desc" rows="5" required
+                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">{{ event.full_desc }}</textarea>
+            </div>
+
+            <div style="grid-column: 1 / -1;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Main Event Image</label>
+                <input type="file" name="main_image" accept="image/*"
+                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
+                {% if event.main_image %}
+                <p class="mt-2"><small>Current: <a href="{{ event.main_image }}" target="_blank">View</a></small></p>
+                {% endif %}
+            </div>
+
+            <div style="grid-column: 1 / -1;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Gallery Images (Multiple)</label>
+                <input type="file" name="gallery" multiple accept="image/*"
+                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
+                {% if event.gallery %}
+                <p class="mt-2"><small>Existing gallery images will remain. New ones will be appended.</small></p>
+                {% endif %}
+            </div>
+        </div>
+
+        <script>
+            function toggleCustomCategory(value) {
+                const customInput = document.getElementById('customCategory');
+                if (value === 'Other') {
+                    customInput.style.display = 'block';
+                    customInput.required = true;
+                } else {
+                    customInput.style.display = 'none';
+                    customInput.required = false;
+                }
+            }
+        </script>
+
+        <div style="margin-top: 30px; display: flex; gap: 10px;">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Update Event
+            </button>
+            <a href="{{ url_for('admin.events') }}" class="btn"
+                style="background: var(--bg-color); color: var(--text-color); border: 1px solid var(--border-color); padding: 6px 12px; text-decoration: none; border-radius: 6px;">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

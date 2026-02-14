@@ -1,0 +1,69 @@
+{% extends 'admin/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Job Vacancy Details</h4>
+                <div>
+                    <a href="{{ url_for('admin.edit_vacancy', id=vacancy.id) }}" class="btn btn-light btn-sm">Edit</a>
+                    <a href="{{ url_for('admin.vacancies') }}" class="btn btn-light btn-sm">Back</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <tr>
+                        <th style="width: 30%">Title</th>
+                        <td>{{ vacancy.title }}</td>
+                    </tr>
+                    <tr>
+                        <th>Slug</th>
+                        <td>{{ vacancy.slug }}</td>
+                    </tr>
+                    <tr>
+                        <th>Location</th>
+                        <td>{{ vacancy.location }}</td>
+                    </tr>
+                    <tr>
+                        <th>Type</th>
+                        <td><span class="badge bg-info">{{ vacancy.type }}</span></td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td>{{ vacancy.description | nl2br }}</td>
+                    </tr>
+                    <tr>
+                        <th>Requirements</th>
+                        <td>
+                            {% if vacancy.requirements %}
+                            <ul>
+                                {% for req in vacancy.requirements.split(',') %}
+                                <li>{{ req.strip() }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% else %}
+                            None
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Status</th>
+                        <td>
+                            {% if vacancy.is_active %}
+                            <span class="badge bg-success">Active</span>
+                            {% else %}
+                            <span class="badge bg-secondary">Inactive</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Posted On</th>
+                        <td>{{ vacancy.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

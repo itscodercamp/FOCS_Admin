@@ -40,6 +40,10 @@
                 </td>
                 <td>{{ vacancy.timestamp.strftime('%Y-%m-%d') }}</td>
                 <td>
+                    <a href="{{ url_for('admin.view_vacancy', id=vacancy.id) }}" class="btn btn-sm btn-info"
+                        style="padding: 5px 10px; font-size: 0.8rem; margin-right: 5px;">View</a>
+                    <a href="{{ url_for('admin.edit_vacancy', id=vacancy.id) }}" class="btn btn-sm btn-warning"
+                        style="padding: 5px 10px; font-size: 0.8rem; margin-right: 5px;">Edit</a>
                     <form action="{{ url_for('admin.delete_vacancy', id=vacancy.id) }}" method="POST"
                         class="delete-form" style="display:inline;">
                         <button type="submit" class="btn btn-danger"

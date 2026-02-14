@@ -86,6 +86,18 @@ def delete_contact(id):
     flash('Contact query deleted successfully.', 'success')
     return redirect(url_for('admin.contacts'))
 
+@admin_bp.route('/contacts/view/<int:id>')
+@login_required
+def view_contact(id):
+    contact = ContactQuery.query.get_or_404(id)
+    return render_template('admin/view_contact.html', contact=contact)
+
+@admin_bp.route('/contacts/view/<int:id>')
+@login_required
+def view_contact(id):
+    contact = ContactQuery.query.get_or_404(id)
+    return render_template('admin/view_contact.html', contact=contact)
+
 # --- Partnership Routes ---
 @admin_bp.route('/partnerships')
 @login_required
@@ -102,6 +114,12 @@ def delete_partnership(id):
     flash('Partnership request deleted successfully.', 'success')
     return redirect(url_for('admin.partnerships'))
 
+@admin_bp.route('/partnerships/view/<int:id>')
+@login_required
+def view_partnership(id):
+    req = PartnershipRequest.query.get_or_404(id)
+    return render_template('admin/view_partnership.html', req=req)
+
 # --- Careers Routes ---
 @admin_bp.route('/careers')
 @login_required
@@ -117,6 +135,12 @@ def delete_career(id):
     db.session.commit()
     flash('Job application deleted successfully.', 'success')
     return redirect(url_for('admin.careers'))
+
+@admin_bp.route('/careers/view/<int:id>')
+@login_required
+def view_career(id):
+    app = JobApplication.query.get_or_404(id)
+    return render_template('admin/view_career.html', app=app)
 
 # --- Vacancies Routes ---
 @admin_bp.route('/vacancies')
@@ -164,6 +188,32 @@ def delete_vacancy(id):
     db.session.commit()
     flash('Job vacancy deleted successfully.', 'success')
     return redirect(url_for('admin.vacancies'))
+
+@admin_bp.route('/vacancies/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_vacancy(id):
+    vacancy = Vacancy.query.get_or_404(id)
+    if request.method == 'POST':
+        try:
+            vacancy.title = request.form.get('title')
+            vacancy.location = request.form.get('location')
+            vacancy.type = request.form.get('type')
+            vacancy.description = request.form.get('description')
+            vacancy.requirements = request.form.get('requirements')
+            
+            db.session.commit()
+            flash('Vacancy updated successfully!', 'success')
+            return redirect(url_for('admin.vacancies'))
+        except Exception as e:
+            flash(f'Error updating vacancy: {str(e)}', 'danger')
+            
+    return render_template('admin/edit_vacancy.html', vacancy=vacancy)
+
+@admin_bp.route('/vacancies/view/<int:id>')
+@login_required
+def view_vacancy(id):
+    vacancy = Vacancy.query.get_or_404(id)
+    return render_template('admin/view_vacancy.html', vacancy=vacancy)
 
 # --- Projects Routes ---
 @admin_bp.route('/projects')
@@ -237,6 +287,53 @@ def delete_project(id):
     flash('Project deleted successfully.', 'success')
     return redirect(url_for('admin.projects'))
 
+@admin_bp.route('/projects/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_project(id):
+    project = Project.query.get_or_404(id)
+    if request.method == 'POST':
+        try:
+            project.title = request.form.get('title')
+            project.student_name = request.form.get('student_name')
+            project.college = request.form.get('college')
+            project.year = request.form.get('year')
+            project.full_description = request.form.get('full_description')
+            project.description = project.full_description[:150] + '...' if len(project.full_description) > 150 else project.full_description
+            project.duration = request.form.get('duration')
+            project.tech_stack = request.form.get('tech_stack')
+            project.live_link = request.form.get('live_link')
+            project.repo_link = request.form.get('repo_link')
+
+            # Handle file uploads
+            thumbnail_file = request.files.get('thumbnail')
+            if thumbnail_file and thumbnail_file.filename:
+                project.thumbnail = save_file(thumbnail_file, 'projects')
+
+            screenshot_files = request.files.getlist('screenshots')
+            new_screenshots = []
+            for f in screenshot_files:
+                path = save_file(f, 'projects/screenshots')
+                if path:
+                    new_screenshots.append(path)
+            
+            if new_screenshots:
+                current = project.screenshots.split(',') if project.screenshots else []
+                project.screenshots = ','.join(current + new_screenshots)
+            
+            db.session.commit()
+            flash('Project updated successfully!', 'success')
+            return redirect(url_for('admin.projects'))
+        except Exception as e:
+            flash(f'Error updating project: {str(e)}', 'danger')
+            
+    return render_template('admin/edit_project.html', project=project)
+
+@admin_bp.route('/projects/view/<int:id>')
+@login_required
+def view_project(id):
+    project = Project.query.get_or_404(id)
+    return render_template('admin/view_project.html', project=project)
+
 # --- Events Routes ---
 @admin_bp.route('/events')
 @login_required
@@ -309,3 +406,54 @@ def delete_event(id):
     db.session.commit()
     flash('Event deleted successfully.', 'success')
     return redirect(url_for('admin.events'))
+
+@admin_bp.route('/events/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_event(id):
+    event = Event.query.get_or_404(id)
+    if request.method == 'POST':
+        try:
+            event.title = request.form.get('title')
+            event.full_desc = request.form.get('full_desc')
+            event.short_desc = event.full_desc[:150] + '...' if len(event.full_desc) > 150 else event.full_desc
+            
+            category = request.form.get('category')
+            if category == 'Other':
+                category = request.form.get('custom_category')
+            event.category = category
+            
+            event.date = request.form.get('date')
+            event.time = request.form.get('time')
+            event.venue = request.form.get('venue')
+            event.organizer = request.form.get('organizer')
+            
+            # Handle images
+            main_image_file = request.files.get('main_image')
+            if main_image_file and main_image_file.filename:
+                event.main_image = save_file(main_image_file, 'events')
+
+            # Append new gallery images
+            gallery_files = request.files.getlist('gallery')
+            new_gallery = []
+            for f in gallery_files:
+                path = save_file(f, 'events/gallery')
+                if path:
+                    new_gallery.append(path)
+            
+            if new_gallery:
+                current_gallery = event.gallery.split(',') if event.gallery else []
+                event.gallery = ','.join(current_gallery + new_gallery)
+            
+            db.session.commit()
+            flash('Event updated successfully!', 'success')
+            return redirect(url_for('admin.events'))
+        except Exception as e:
+            flash(f'Error updating event: {str(e)}', 'danger')
+
+    return render_template('admin/edit_event.html', event=event)
+
+@admin_bp.route('/events/view/<int:id>')
+@login_required
+def view_event(id):
+    event = Event.query.get_or_404(id)
+    return render_template('admin/view_event.html', event=event)

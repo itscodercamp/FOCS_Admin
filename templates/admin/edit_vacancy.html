@@ -1,0 +1,61 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<div style="margin-bottom: 30px;">
+    <h2 style="font-weight: 600;">Edit Job Opening</h2>
+    <p style="color: var(--text-muted);">Update job vacancy details.</p>
+</div>
+
+<div class="table-responsive" style="padding: 30px;">
+    <form method="POST" action="{{ url_for('admin.edit_vacancy', id=vacancy.id) }}">
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+            <div style="grid-column: 1 / -1;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Job Title *</label>
+                <input type="text" name="title" required value="{{ vacancy.title }}"
+                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
+            </div>
+
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Location</label>
+                <input type="text" name="location" value="{{ vacancy.location }}"
+                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
+            </div>
+
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Employment Type</label>
+                <select name="type"
+                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
+                    <option value="Full-time" {% if vacancy.type=='Full-time' %}selected{% endif %}>Full-time</option>
+                    <option value="Part-time" {% if vacancy.type=='Part-time' %}selected{% endif %}>Part-time</option>
+                    <option value="Internship" {% if vacancy.type=='Internship' %}selected{% endif %}>Internship
+                    </option>
+                    <option value="Contract" {% if vacancy.type=='Contract' %}selected{% endif %}>Contract</option>
+                </select>
+            </div>
+
+            <div style="grid-column: 1 / -1;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Job Description</label>
+                <textarea name="description" rows="5"
+                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">{{ vacancy.description }}</textarea>
+            </div>
+
+            <div style="grid-column: 1 / -1;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Requirements
+                    (comma-separated)</label>
+                <textarea name="requirements" rows="3"
+                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">{{ vacancy.requirements }}</textarea>
+            </div>
+        </div>
+
+        <div style="margin-top: 30px; display: flex; gap: 10px;">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Update Job
+            </button>
+            <a href="{{ url_for('admin.vacancies') }}" class="btn"
+                style="background: var(--bg-color); color: var(--text-color); border: 1px solid var(--border-color); padding: 6px 12px; text-decoration: none; border-radius: 6px;">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}
