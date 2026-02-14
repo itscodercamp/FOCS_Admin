@@ -50,7 +50,8 @@
                 <label style="display: block; margin-bottom: 8px; font-weight: 500;">Full Description *</label>
                 <textarea name="full_description" rows="5" required
                     style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);"></textarea>
-                <p style="font-size: 12px; color: var(--text-muted); margin-top: 5px;">Short description will be automatically generated from this.</p>
+                <p style="font-size: 12px; color: var(--text-muted); margin-top: 5px;">Short description will be
+                    automatically generated from this.</p>
             </div>
 
             <div>
@@ -67,16 +68,46 @@
 
             <div>
                 <label style="display: block; margin-bottom: 8px; font-weight: 500;">Live Link</label>
-                <input type="url" name="live_link"
-                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
+                <div style="display: flex; gap: 10px;">
+                    <select onchange="updateLinkInput(this, 'live_link_input')"
+                        style="padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color); width: 140px;">
+                        <option value="custom">Enter URL</option>
+                        <option value="not_provided">Not Provided</option>
+                    </select>
+                    <input type="text" id="live_link_input" name="live_link" placeholder="https://"
+                        style="flex: 1; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
+                </div>
             </div>
 
             <div>
                 <label style="display: block; margin-bottom: 8px; font-weight: 500;">Repository Link</label>
-                <input type="url" name="repo_link"
-                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
+                <div style="display: flex; gap: 10px;">
+                    <select onchange="updateLinkInput(this, 'repo_link_input')"
+                        style="padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color); width: 140px;">
+                        <option value="custom">Enter URL</option>
+                        <option value="not_provided">Not Provided</option>
+                    </select>
+                    <input type="text" id="repo_link_input" name="repo_link" placeholder="https://"
+                        style="flex: 1; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
+                </div>
             </div>
         </div>
+
+        <script>
+            function updateLinkInput(select, inputId) {
+                const input = document.getElementById(inputId);
+                if (select.value === 'not_provided') {
+                    input.value = 'Not Provided';
+                    input.readOnly = true;
+                    input.style.opacity = '0.7';
+                } else {
+                    input.value = '';
+                    input.readOnly = false;
+                    input.style.opacity = '1';
+                    input.focus();
+                }
+            }
+        </script>
 
         <div style="margin-top: 30px; display: flex; gap: 10px;">
             <button type="submit" class="btn btn-primary">

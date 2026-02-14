@@ -303,6 +303,12 @@ def edit_project(id):
             if thumbnail_file and thumbnail_file.filename:
                 project.thumbnail = save_file(thumbnail_file, 'projects')
 
+            # Handle existing screenshots deletion
+            deleted_screenshots = request.form.get('deleted_screenshots', '').split(',')
+            current_screenshots = project.screenshots.split(',') if project.screenshots else []
+            updated_screenshots = [s for s in current_screenshots if s and s not in deleted_screenshots]
+
+            # Append new screenshots
             screenshot_files = request.files.getlist('screenshots')
             new_screenshots = []
             for f in screenshot_files:
@@ -310,9 +316,11 @@ def edit_project(id):
                 if path:
                     new_screenshots.append(path)
             
-            if new_screenshots:
-                current = project.screenshots.split(',') if project.screenshots else []
-                project.screenshots = ','.join(current + new_screenshots)
+            # Combine remaining existing and new screenshots
+            if updated_screenshots or new_screenshots:
+                project.screenshots = ','.join(updated_screenshots + new_screenshots)
+            else:
+                project.screenshots = ''
             
             db.session.commit()
             flash('Project updated successfully!', 'success')

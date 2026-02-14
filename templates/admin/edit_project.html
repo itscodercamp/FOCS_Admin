@@ -1,97 +1,250 @@
 {% extends "admin/base.html" %}
 
 {% block content %}
-<div style="margin-bottom: 30px;">
-    <h2 style="font-weight: 600;">Edit Project</h2>
-    <p style="color: var(--text-muted);">Update project details.</p>
-</div>
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-5">
+                <div class="mb-4">
+                    <h2 class="fw-bold mb-1 text-dark">Edit Project</h2>
+                    <p class="text-muted">Update project details and manage media.</p>
+                </div>
 
-<div class="table-responsive" style="padding: 30px;">
-    <form method="POST" action="{{ url_for('admin.edit_project', id=project.id) }}" enctype="multipart/form-data">
-        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
-            <div>
-                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Project Title *</label>
-                <input type="text" name="title" required value="{{ project.title }}"
-                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
-            </div>
+                <form method="POST" action="{{ url_for('admin.edit_project', id=project.id) }}"
+                    enctype="multipart/form-data">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label class="form-label fw-medium">Project Title <span class="text-danger">*</span></label>
+                            <input type="text" name="title" required value="{{ project.title }}" class="form-control"
+                                placeholder="Enter project title">
+                        </div>
 
-            <div>
-                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Student Name *</label>
-                <input type="text" name="student_name" required value="{{ project.student_name }}"
-                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
-            </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-medium">Student Name <span class="text-danger">*</span></label>
+                            <input type="text" name="student_name" required value="{{ project.student_name }}"
+                                class="form-control" placeholder="Student name">
+                        </div>
 
-            <div>
-                <label style="display: block; margin-bottom: 8px; font-weight: 500;">College</label>
-                <input type="text" name="college" value="{{ project.college }}"
-                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
-            </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-medium">College</label>
+                            <input type="text" name="college" value="{{ project.college }}" class="form-control"
+                                placeholder="College name">
+                        </div>
 
-            <div>
-                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Year</label>
-                <input type="text" name="year" value="{{ project.year }}"
-                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
-            </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-medium">Year</label>
+                            <input type="text" name="year" value="{{ project.year }}" class="form-control"
+                                placeholder="e.g. 2024">
+                        </div>
 
-            <div>
-                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Duration</label>
-                <input type="text" name="duration" value="{{ project.duration }}"
-                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
-            </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-medium">Duration</label>
+                            <input type="text" name="duration" value="{{ project.duration }}" class="form-control"
+                                placeholder="e.g. 3 Months">
+                        </div>
 
-            <div>
-                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Tech Stack
-                    (comma-separated)</label>
-                <input type="text" name="tech_stack" value="{{ project.tech_stack }}"
-                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
-            </div>
+                        <div class="col-12">
+                            <label class="form-label fw-medium">Tech Stack (comma-separated)</label>
+                            <input type="text" name="tech_stack" value="{{ project.tech_stack }}" class="form-control"
+                                placeholder="Python, Flask, React, etc.">
+                        </div>
 
-            <div style="grid-column: 1 / -1;">
-                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Full Description *</label>
-                <textarea name="full_description" rows="5" required
-                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">{{ project.full_description }}</textarea>
-            </div>
+                        <div class="col-12">
+                            <label class="form-label fw-medium">Full Description <span
+                                    class="text-danger">*</span></label>
+                            <textarea name="full_description" rows="5" required class="form-control"
+                                placeholder="Detailed project description">{{ project.full_description }}</textarea>
+                        </div>
 
-            <div>
-                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Thumbnail Image</label>
-                <input type="file" name="thumbnail" accept="image/*"
-                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
-                {% if project.thumbnail %}
-                <p class="mt-2"><small>Current: <a href="{{ project.thumbnail }}" target="_blank">View</a></small></p>
-                {% endif %}
-            </div>
+                        <!-- Image Management Section -->
+                        <div class="col-12">
+                            <h5 class="fw-bold mt-4 mb-3 border-bottom pb-2">Media Management</h5>
+                        </div>
 
-            <div>
-                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Add Screenshots</label>
-                <input type="file" name="screenshots" multiple accept="image/*"
-                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
-                {% if project.screenshots %}
-                <p class="mt-2"><small>Existing screenshots will remain. New ones will be appended.</small></p>
-                {% endif %}
-            </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-medium">Thumbnail Image</label>
+                            <input type="file" name="thumbnail" accept="image/*" class="form-control mb-2"
+                                onchange="previewImage(this, 'thumbnail-preview')">
+                            <div id="thumbnail-preview" class="mt-2">
+                                {% if project.thumbnail %}
+                                <div class="position-relative d-inline-block">
+                                    <img src="{{ project.thumbnail }}" class="rounded border"
+                                        style="height: 100px; width: auto; object-fit: cover;">
+                                    <span
+                                        class="badge bg-success position-absolute top-0 start-100 translate-middle">Current</span>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
 
-            <div>
-                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Live Link</label>
-                <input type="url" name="live_link" value="{{ project.live_link or '' }}"
-                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
-            </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-medium">Add New Screenshots</label>
+                            <input type="file" name="screenshots" multiple accept="image/*" class="form-control mb-2"
+                                onchange="previewImages(this, 'new-screenshots-preview')">
+                            <div id="new-screenshots-preview" class="d-flex gap-2 flex-wrap mt-2"></div>
+                        </div>
 
-            <div>
-                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Repository Link</label>
-                <input type="url" name="repo_link" value="{{ project.repo_link or '' }}"
-                    style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
+                        {% if project.screenshots %}
+                        <div class="col-12">
+                            <label class="form-label fw-medium">Manage Existing Screenshots</label>
+                            <div class="d-flex flex-wrap gap-3 p-3 bg-light rounded border">
+                                {% for shot in project.screenshots.split(',') %}
+                                {% if shot %}
+                                <div class="position-relative screenshot-container" id="shot-{{ loop.index }}">
+                                    <img src="{{ shot }}" class="rounded border shadow-sm"
+                                        style="height: 100px; width: 150px; object-fit: cover;">
+                                    <button type="button"
+                                        class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 rounded-circle p-0 d-flex align-items-center justify-content-center"
+                                        style="width: 24px; height: 24px;"
+                                        onclick="markForDeletion('{{ shot }}', 'shot-{{ loop.index }}')">
+                                        <i class="fas fa-times" style="font-size: 12px;"></i>
+                                    </button>
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                            <input type="hidden" name="deleted_screenshots" id="deleted_screenshots">
+                            <small class="text-muted"><i class="fas fa-info-circle me-1"></i> Check the X button to
+                                remove a screenshot.</small>
+                        </div>
+                        {% endif %}
+
+                        <!-- Links Section -->
+                        <div class="col-12">
+                            <h5 class="fw-bold mt-4 mb-3 border-bottom pb-2">Links</h5>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-medium">Live Link</label>
+                            <div class="input-group">
+                                <input type="url" name="live_link" id="live_link"
+                                    value="{{ project.live_link if project.live_link != 'Not Provided' else '' }}"
+                                    class="form-control" placeholder="https://..." {% if
+                                    project.live_link=='Not Provided' %}disabled{% endif %}>
+                                <div class="input-group-text">
+                                    <input class="form-check-input mt-0 me-2" type="checkbox" id="live_secure"
+                                        value="Not Provided" {% if project.live_link=='Not Provided' %}checked{% endif
+                                        %} onchange="toggleLinkInput('live_link', this)">
+                                    <label class="form-check-label mb-0" style="font-size: 0.8rem;"
+                                        for="live_secure">Security Restricted</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-medium">Repository Link</label>
+                            <div class="input-group">
+                                <input type="url" name="repo_link" id="repo_link"
+                                    value="{{ project.repo_link if project.repo_link != 'Not Provided' else '' }}"
+                                    class="form-control" placeholder="https://..." {% if
+                                    project.repo_link=='Not Provided' %}disabled{% endif %}>
+                                <div class="input-group-text">
+                                    <input class="form-check-input mt-0 me-2" type="checkbox" id="repo_secure"
+                                        value="Not Provided" {% if project.repo_link=='Not Provided' %}checked{% endif
+                                        %} onchange="toggleLinkInput('repo_link', this)">
+                                    <label class="form-check-label mb-0" style="font-size: 0.8rem;"
+                                        for="repo_secure">Security Restricted</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="fas fa-save me-2"></i> Update Project
+                        </button>
+                        <a href="{{ url_for('admin.projects') }}" class="btn btn-light border px-4">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
             </div>
         </div>
-
-        <div style="margin-top: 30px; display: flex; gap: 10px;">
-            <button type="submit" class="btn btn-primary">
-                <i class="fas fa-save"></i> Update Project
-            </button>
-            <a href="{{ url_for('admin.projects') }}" class="btn"
-                style="background: var(--bg-color); color: var(--text-color); border: 1px solid var(--border-color); padding: 6px 12px; text-decoration: none; border-radius: 6px;">
-                Cancel
-            </a>
-        </div>
-    </form>
+    </div>
 </div>
+
+<script>
+    function previewImage(input, previewId) {
+        const previewDiv = document.getElementById(previewId);
+        // Keep existing content if it's the thumbnail container and user cancels
+        if (previewId === 'thumbnail-preview' && (!input.files || !input.files[0])) return;
+
+        previewDiv.innerHTML = '';
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                previewDiv.innerHTML = `<img src="${e.target.result}" class="rounded border" style="height: 100px; width: auto; object-fit: cover;">`;
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function previewImages(input, previewId) {
+        const previewDiv = document.getElementById(previewId);
+        previewDiv.innerHTML = '';
+        if (input.files) {
+            Array.from(input.files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'rounded border shadow-sm';
+                    img.style.height = '80px';
+                    img.style.width = '80px';
+                    img.style.objectFit = 'cover';
+                    previewDiv.appendChild(img);
+                }
+                reader.readAsDataURL(file);
+            });
+        }
+    }
+
+    const deletedShots = new Set();
+    function markForDeletion(shotUrl, elementId) {
+        const element = document.getElementById(elementId);
+        if (deletedShots.has(shotUrl)) {
+            deletedShots.delete(shotUrl);
+            element.style.opacity = '1';
+            element.querySelector('button').classList.replace('btn-secondary', 'btn-danger');
+            element.querySelector('button i').classList.replace('fa-undo', 'fa-times');
+        } else {
+            deletedShots.add(shotUrl);
+            element.style.opacity = '0.4';
+            element.querySelector('button').classList.replace('btn-danger', 'btn-secondary');
+            element.querySelector('button i').classList.replace('fa-times', 'fa-undo');
+        }
+        document.getElementById('deleted_screenshots').value = Array.from(deletedShots).join(',');
+    }
+
+    function toggleLinkInput(inputId, checkbox) {
+        const input = document.getElementById(inputId);
+        if (checkbox.checked) {
+            input.disabled = true;
+            input.value = ''; // Clear value but backend will see the checkbox
+            // We need to inject a hidden input with the specific value if the text input is disabled, 
+            // but actually we can handle this by checking the checkbox server-side or manipulating the post data.
+            // A simpler way for form submission: enable input and set value to "Not Provided" before submit
+        } else {
+            input.disabled = false;
+        }
+    }
+
+    // Add submit handler to handle disabled inputs
+    document.querySelector('form').addEventListener('submit', function (e) {
+        if (document.getElementById('live_secure').checked) {
+            const hidden = document.createElement('input');
+            hidden.type = 'hidden';
+            hidden.name = 'live_link';
+            hidden.value = 'Not Provided';
+            this.appendChild(hidden);
+        }
+        if (document.getElementById('repo_secure').checked) {
+            const hidden = document.createElement('input');
+            hidden.type = 'hidden';
+            hidden.name = 'repo_link';
+            hidden.value = 'Not Provided';
+            this.appendChild(hidden);
+        }
+    });
+</script>
 {% endblock %}

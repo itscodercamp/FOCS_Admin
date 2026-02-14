@@ -412,3 +412,57 @@ tr:hover td {
         grid-template-columns: 1fr;
     }
 }
+/* Action Buttons Styling */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.btn-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: transparent;
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.btn-view {
+    color: var(--primary-color);
+    background: rgba(59, 130, 246, 0.1);
+}
+
+.btn-view:hover {
+    background: var(--primary-color);
+    color: white;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.25);
+}
+
+.btn-edit {
+    color: var(--warning-color);
+    background: rgba(245, 158, 11, 0.1);
+}
+
+.btn-edit:hover {
+    background: var(--warning-color);
+    color: white;
+    box-shadow: 0 2px 4px rgba(245, 158, 11, 0.25);
+}
+
+.btn-delete {
+    color: var(--danger-color);
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.btn-delete:hover {
+    background: var(--danger-color);
+    color: white;
+    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.25);
+}

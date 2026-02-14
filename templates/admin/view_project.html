@@ -1,72 +1,228 @@
 {% extends 'admin/base.html' %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-10">
-        <div class="card shadow">
-            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                <h4 class="mb-0">Project Details</h4>
-                <div>
-                    <a href="{{ url_for('admin.edit_project', id=project.id) }}" class="btn btn-light btn-sm">Edit</a>
-                    <a href="{{ url_for('admin.projects') }}" class="btn btn-light btn-sm">Back</a>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-4">
-                        {% if project.thumbnail %}
-                        <img src="{{ project.thumbnail }}" class="img-fluid rounded mb-3" alt="Thumbnail">
-                        {% else %}
-                        <div class="alert alert-secondary">No Thumbnail</div>
-                        {% endif %}
+<div class="container-fluid px-4 py-5">
+    <div class="row justify-content-center">
+        <div class="col-xl-9 col-lg-10">
+            <div class="card shadow-sm border-0 rounded-4 overflow-hidden bg-white">
+                <!-- Header Section -->
+                <div class="bg-primary bg-gradient p-4 text-white position-relative">
+                    <div class="d-flex justify-content-between align-items-center position-relative z-1 mb-3">
+                        <span
+                            class="badge bg-white text-primary fw-bold text-uppercase ls-1 px-3 py-2 rounded-pill shadow-sm fs-7">
+                            <i class="fas fa-code me-1"></i> Project Showcase
+                        </span>
+                        <div class="d-flex gap-2">
+                            <a href="{{ url_for('admin.edit_project', id=project.id) }}"
+                                class="btn btn-light btn-sm rounded-pill px-3 fw-medium shadow-sm transition-hover">
+                                <i class="fas fa-edit me-1"></i> Edit
+                            </a>
+                            <a href="{{ url_for('admin.projects') }}"
+                                class="btn btn-outline-light btn-sm rounded-pill px-3 fw-medium shadow-sm transition-hover">
+                                <i class="fas fa-arrow-left me-1"></i> Back
+                            </a>
+                        </div>
                     </div>
-                    <div class="col-md-8">
-                        <h3>{{ project.title }}</h3>
-                        <p class="text-muted">{{ project.student_name }} | {{ project.college }} | {{ project.year }}
-                        </p>
-
-                        <div class="mb-3">
-                            {% if project.tech_stack %}
-                            {% for tech in project.tech_stack.split(',') %}
-                            <span class="badge bg-secondary">{{ tech.strip() }}</span>
-                            {% endfor %}
-                            {% endif %}
+                    <div class="position-relative z-1">
+                        <h1 class="display-6 fw-bold mb-2">{{ project.title }}</h1>
+                        <div class="d-flex align-items-center opacity-75">
+                            <i class="fas fa-user-graduate me-2"></i>
+                            <span class="lead fs-6 mb-0">{{ project.student_name }}</span>
                         </div>
-
-                        <p><strong>Duration:</strong> {{ project.duration }}</p>
-
-                        <div class="mb-3">
-                            <a href="{{ project.live_link }}" target="_blank" class="btn btn-sm btn-success">Live
-                                Demo</a>
-                            <a href="{{ project.repo_link }}" target="_blank" class="btn btn-sm btn-dark">GitHub
-                                Repo</a>
-                        </div>
+                    </div>
+                    <!-- Decorative BG -->
+                    <div class="position-absolute top-0 end-0 h-100 w-100 opacity-10"
+                        style="background: radial-gradient(circle at top right, rgba(255,255,255,0.3), transparent 70%); pointer-events: none;">
                     </div>
                 </div>
 
-                <hr>
+                <div class="card-body p-4 p-md-5">
+                    <div class="row g-4 g-lg-5">
+                        <!-- Left Sidebar: Thumbnail & Meta -->
+                        <div class="col-lg-4">
+                            <!-- Main Thumbnail -->
+                            <div
+                                class="mb-4 rounded-3 overflow-hidden shadow-sm border border-light-subtle position-relative group-hover-zoom">
+                                {% if project.thumbnail %}
+                                <img src="{{ project.thumbnail }}" class="img-fluid w-100 object-fit-cover"
+                                    style="height: 220px;" alt="{{ project.title }}">
+                                {% else %}
+                                <div class="bg-light d-flex align-items-center justify-content-center text-muted"
+                                    style="height: 220px;">
+                                    <div class="text-center">
+                                        <i class="fas fa-image fa-3x mb-2 text-secondary opacity-50"></i>
+                                        <p class="mb-0 small fw-medium">No Thumbnail</p>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
 
-                <h5>Description</h5>
-                <p>{{ project.full_description | nl2br }}</p>
+                            <!-- Spec Card -->
+                            <div class="card border-0 bg-light rounded-4 mb-4">
+                                <div class="card-body p-4">
+                                    <h6 class="text-uppercase text-secondary fw-bold fs-7 ls-1 mb-3 border-bottom pb-2">
+                                        Project Specs</h6>
 
-                <hr>
+                                    <div class="d-flex flex-column gap-3">
+                                        <div class="d-flex align-items-center">
+                                            <div
+                                                class="icon-square-sm bg-white text-primary shadow-sm rounded-circle me-3">
+                                                <i class="fas fa-university fa-sm"></i>
+                                            </div>
+                                            <div>
+                                                <small class="d-block text-muted fs-7 text-uppercase">College</small>
+                                                <span class="fw-semibold text-dark fs-6">{{ project.college }}</span>
+                                            </div>
+                                        </div>
 
-                <h5>Screenshots</h5>
-                <div class="row">
-                    {% if project.screenshots %}
-                    {% for shot in project.screenshots.split(',') %}
-                    <div class="col-md-4 mb-3">
-                        <a href="{{ shot }}" target="_blank">
-                            <img src="{{ shot }}" class="img-fluid rounded border" alt="Screenshot">
-                        </a>
+                                        <div class="d-flex align-items-center">
+                                            <div
+                                                class="icon-square-sm bg-white text-info shadow-sm rounded-circle me-3">
+                                                <i class="fas fa-calendar-alt fa-sm"></i>
+                                            </div>
+                                            <div>
+                                                <small class="d-block text-muted fs-7 text-uppercase">Year</small>
+                                                <span class="fw-semibold text-dark fs-6">{{ project.year }}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex align-items-center">
+                                            <div
+                                                class="icon-square-sm bg-white text-warning shadow-sm rounded-circle me-3">
+                                                <i class="fas fa-hourglass-half fa-sm"></i>
+                                            </div>
+                                            <div>
+                                                <small class="d-block text-muted fs-7 text-uppercase">Duration</small>
+                                                <span class="fw-semibold text-dark fs-6">{{ project.duration }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tech Stack -->
+                            <div class="mb-4">
+                                <h6 class="text-uppercase text-secondary fw-bold fs-7 ls-1 mb-3">Tech Stack</h6>
+                                <div class="d-flex flex-wrap gap-2">
+                                    {% if project.tech_stack %}
+                                    {% for tech in project.tech_stack.split(',') %}
+                                    <span
+                                        class="badge bg-white text-dark border shadow-sm fw-medium px-2 py-1 rounded-2 fs-7">
+                                        {{ tech.strip() }}
+                                    </span>
+                                    {% endfor %}
+                                    {% else %}
+                                    <span class="text-muted small fst-italic">Not specified</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <!-- Links -->
+                            <div class="d-grid gap-2">
+                                {% if project.live_link and project.live_link != 'Not Provided' %}
+                                <a href="{{ project.live_link }}" target="_blank"
+                                    class="btn btn-primary rounded-pill btn-sm py-2 shadow-sm transition-hover">
+                                    <i class="fas fa-external-link-alt me-2"></i> Live Demo
+                                </a>
+                                {% endif %}
+
+                                {% if project.repo_link and project.repo_link != 'Not Provided' %}
+                                <a href="{{ project.repo_link }}" target="_blank"
+                                    class="btn btn-dark rounded-pill btn-sm py-2 shadow-sm transition-hover">
+                                    <i class="fab fa-github me-2"></i> View Code
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Right Content -->
+                        <div class="col-lg-8">
+                            <div class="ps-lg-2">
+                                <div class="mb-5">
+                                    <h5 class="fw-bold text-dark border-bottom pb-3 mb-4">
+                                        <span class="border-bottom border-primary border-3 pb-3">About Project</span>
+                                    </h5>
+                                    <div class="text-secondary lh-lg project-description fs-6">
+                                        {{ project.full_description | nl2br | safe }}
+                                    </div>
+                                </div>
+
+                                {% if project.screenshots %}
+                                <div>
+                                    <h5 class="fw-bold text-dark border-bottom pb-3 mb-4">
+                                        <span class="border-bottom border-primary border-3 pb-3">Gallery</span>
+                                    </h5>
+                                    <div class="row g-3">
+                                        {% for shot in project.screenshots.split(',') %}
+                                        {% if shot %}
+                                        <div class="col-6 col-md-4 col-xl-3">
+                                            <a href="{{ shot }}" target="_blank"
+                                                class="d-block position-relative rounded-3 overflow-hidden shadow-sm group-hover-zoom aspect-ratio-1">
+                                                <img src="{{ shot }}"
+                                                    class="img-fluid w-100 h-100 object-fit-cover position-absolute top-0 start-0"
+                                                    alt="Screenshot">
+                                                <div
+                                                    class="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-25 opacity-0 hover-opacity-100 transition-all d-flex align-items-center justify-content-center">
+                                                    <i class="fas fa-search-plus text-white drop-shadow"></i>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
-                    {% endfor %}
-                    {% else %}
-                    <p class="text-muted">No screenshots available.</p>
-                    {% endif %}
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    .fs-7 {
+        font-size: 0.75rem !important;
+    }
+
+    .ls-1 {
+        letter-spacing: 0.5px;
+    }
+
+    .icon-square-sm {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .transition-hover {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .transition-hover:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
+    }
+
+    .group-hover-zoom:hover img {
+        transform: scale(1.05);
+        transition: transform 0.3s ease;
+    }
+
+    .hover-opacity-100:hover {
+        opacity: 1 !important;
+    }
+
+    .aspect-ratio-1 {
+        padding-bottom: 100%;
+    }
+
+    /* Square aspect ratio for uniform grid */
+    .project-description {
+        text-align: justify;
+    }
+</style>
 {% endblock %}

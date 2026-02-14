@@ -76,6 +76,12 @@ def create_app():
 
         create_initial_admin()
 
+    @app.template_filter('nl2br')
+    def nl2br_filter(value):
+        if not value:
+            return ""
+        return value.replace('\n', '<br>')
+
     return app
 
 def create_initial_admin():
